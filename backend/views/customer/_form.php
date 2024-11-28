@@ -57,10 +57,22 @@ $group_assign_list = [];
     <div class="row">
         <div class="col-lg-1"></div>
         <div class="col-lg-3">
+            <?php echo $form->field($model, 'is_head_quater')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
+        </div>
+        <div class="col-lg-3">
+            <?= $form->field($model, 'branch_name')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
             <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-lg-3">
             <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-lg-3">
+            <?= $form->field($model, 'website')->textInput(['maxlength' => true]) ?>
         </div>
 
     </div>

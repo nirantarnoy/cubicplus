@@ -18,9 +18,6 @@ use yii\widgets\ActiveForm;
         <?= $form->field($model, 'taxid')->textInput(['maxlength' => true]) ?>
         <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
-
-        <!-- <?= $form->field($model, 'status')->textInput() ?> -->
-        <?php echo $form->field($model, 'show_expired_date')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
         <?php echo $form->field($model, 'status')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
 
 

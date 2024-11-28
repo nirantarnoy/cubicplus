@@ -33,6 +33,7 @@ class Department extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name'],'required'],
             [['status', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
             [['code', 'name'], 'string', 'max' => 255],
         ];

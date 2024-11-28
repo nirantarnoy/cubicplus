@@ -37,7 +37,7 @@ class Customer extends \common\models\Customer
             [['first_name','email'], 'required'],
             [['business_type', 'status', 'created_at', 'created_by', 'updated_at', 'udpated_by','customer_group_id','company_id','payment_term_id','payment_method_id','work_type_id'], 'integer'],
             [['code', 'name','phone','email','first_name','last_name'], 'string', 'max' => 255],
-            [['address','taxid','branch_code','branch_name'], 'string', 'max' => 255],
+            [['address','taxid','branch_code','branch_name','latlong'], 'string', 'max' => 255],
             [['vat_per_id'],'integer'],
         ];
     }
@@ -66,7 +66,9 @@ class Customer extends \common\models\Customer
             'first_name' => 'ชื่อ',
             'last_name' => 'นามสกุล',
             'branch_code'=>'รหัสสาขา',
-            'branch_name'=>'ชื่อสาขา',
+            'is_head_quater' => 'สำนักงานใหญ่',
+            'branch_name' => 'ชื่อสาขา',
+            'latlong' => 'แผนที่',
             'crated_at' => 'สร้างเมื่อ',
             'created_by' => 'สร้างโดย',
             'updated_at' => 'แก้ไขเมื่อ',

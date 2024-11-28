@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use yii\web\ForbiddenHttpException;
 use yii\filters\AccessControl;
+use yii\web\Session;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -307,8 +308,9 @@ class ProductController extends Controller
                     }
                 }
             }
-
-            return $this->redirect(['view', 'id' => $model->id]);
+            \Yii::$app->session->setFlash("msg-success","ทำรายการสำเร็จ");
+            return $this->redirect(['product/update', 'id' => $model->id]);
+           // return $this->redirect(['product/index']);
         }
 
         return $this->render('update', [

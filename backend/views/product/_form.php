@@ -2,7 +2,10 @@
 
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\web\JqueryAsset;
 use yii\widgets\ActiveForm;
+use yii\web\Session;
 
 /** @var yii\web\View $this */
 /** @var backend\models\Product $model */
@@ -11,10 +14,18 @@ $data_warehouse = \backend\models\Warehouse::find()->all();
 $data_customer = \backend\models\Customer::find()->all();
 
 $yesno = [['id'=>1,'YES'],['id'=>0,'NO']];
+$msg = 0;
+if(\Yii::$app->session->hasFlash('msg-success')){
+    $msg = 1;
+}
+if(\Yii::$app->session->hasFlash('msg-error')){
+    $msg = 2;
+}
+//echo $msg;
 ?>
 
 <div class="product-form">
-
+    <input type="hidden" class="msg-result" value="<?=$msg?>">
     <?php $form = ActiveForm::begin(['options' => ['enctype'=>'multipart/form-data']]); ?>
     <input type="hidden" class="remove-list" name="remove_list" value="">
     <input type="hidden" class="remove-customer-list" name="remove_customer_list" value="">
@@ -223,11 +234,20 @@ $yesno = [['id'=>1,'YES'],['id'=>0,'NO']];
 
 </div>
 <?php
+$url = Url::base();
+$this->registerJsFile("$url/js/custom/showsweetalert.js", ['depends' => JqueryAsset::class]);
 $js=<<<JS
 var removelist = [];
 var removecustomerpricelist = [];
 $(function(){
   // $(".line-exp-date").datepicker(); 
+  var msg_status = $(".msg-result").val();
+  //alert(msg_status);
+  if(msg_status == 1){
+      showAlert("success","ทำรายการสำเร็จ");
+  }else if(msg_status == 2){
+      showAlert("error","ทำรายการไม่สำเร็จ");
+  }
 });
 function addline(e){
     var tr = $("#table-list tbody tr:last");
@@ -299,6 +319,7 @@ function addcustomerpriceline(e){
     tr.after(clone);
      
 }
+
 JS;
 $this->registerJs($js,static::POS_END);
 ?>

@@ -100,7 +100,6 @@ $this->params['breadcrumbs'][] = $this->title;
 //            ],
 
             [
-
                 'header' => 'ตัวเลือก',
                 'headerOptions' => ['style' => 'text-align:center;', 'class' => 'activity-view-link',],
                 'class' => 'yii\grid\ActionColumn',

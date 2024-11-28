@@ -71,25 +71,24 @@ $cost_stock_amt = 0;
                 </div>
             </div>
             <!-- ./col -->
-            <div class="col-lg-3 col-6">
-                <!-- small box -->
-                <div class="small-box bg-success">
-                    <div class="inner">
-                        <h3><?= number_format($order_count) ?></h3>
-                        <!--                        <sup style="font-size: 20px">%</sup>-->
-                        <p>จำนวนคำสั่งซื้อ</p>
-                    </div>
-                    <div class="icon">
-                        <i class="ion ion-stats-bars"></i>
-                    </div>
-                    <a href="<?= Url::to(['order/index'], true) ?>" class="small-box-footer">ไปยังคำสั่งซื้อ <i
-                                class="fas fa-arrow-circle-right"></i></a>
-                </div>
-            </div>
+<!--            <div class="col-lg-3 col-6">-->
+<!--                <div class="small-box bg-success">-->
+<!--                    <div class="inner">-->
+<!--                        <h3>--><?php //= number_format($order_count) ?><!--</h3>-->
+<!--                        <!--                        <sup style="font-size: 20px">%</sup>-->
+<!--                        <p>จำนวนคำสั่งซื้อ</p>-->
+<!--                    </div>-->
+<!--                    <div class="icon">-->
+<!--                        <i class="ion ion-stats-bars"></i>-->
+<!--                    </div>-->
+<!--                    <a href="--><?php //= Url::to(['order/index'], true) ?><!--" class="small-box-footer">ไปยังคำสั่งซื้อ <i-->
+<!--                                class="fas fa-arrow-circle-right"></i></a>-->
+<!--                </div>-->
+<!--            </div>-->
             <!-- ./col -->
             <div class="col-lg-3 col-6">
                 <!-- small box -->
-                <div class="small-box bg-warning">
+                <div class="small-box bg-success">
                     <div class="inner">
                         <h3><?= number_format($customer_count) ?></h3>
                         <p>จำนวนลูกค้า</p>

@@ -37,7 +37,7 @@ class Customer extends \yii\db\ActiveRecord
         return [
             [['firstname','email'], 'required'],
             [['customer_group_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by','payment_term_id','vat_per_id','is_head_quater'], 'integer'],
-            [['code', 'name', 'description', 'taxid','first_name','last_name','branch_name'], 'string', 'max' => 255],
+            [['code', 'name', 'description', 'taxid','first_name','last_name','branch_name','latlong'], 'string', 'max' => 255],
         ];
     }
 
@@ -59,6 +59,7 @@ class Customer extends \yii\db\ActiveRecord
             'vat_per_id' => 'VAT',
             'is_head_quater' => 'สำนักงานใหญ่',
             'branch_name' => 'ชื่อสาขา',
+            'latlong' => 'แผนที่',
             'payment_term_id'=> 'เครดิต',
             'created_at' => 'Created At',
             'created_by' => 'Created By',

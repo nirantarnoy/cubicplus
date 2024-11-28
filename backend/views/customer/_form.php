@@ -62,6 +62,9 @@ $group_assign_list = [];
         <div class="col-lg-3">
             <?= $form->field($model, 'branch_name')->textInput(['maxlength' => true]) ?>
         </div>
+        <div class="col-lg-3">
+            <?= $form->field($model, 'latlong')->textInput(['maxlength' => true]) ?>
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-1"></div>

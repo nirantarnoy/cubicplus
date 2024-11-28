@@ -57,7 +57,7 @@ $group_assign_list = [];
     <div class="row">
         <div class="col-lg-1"></div>
         <div class="col-lg-3">
-            <?php echo $form->field($model, 'is_head_quater')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
+            <?php echo $form->field($model, 'is_head_quater')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label('สำนักงานใหญ่') ?>
         </div>
         <div class="col-lg-3">
             <?= $form->field($model, 'branch_name')->textInput(['maxlength' => true]) ?>

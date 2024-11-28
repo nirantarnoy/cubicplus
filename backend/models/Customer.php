@@ -68,7 +68,7 @@ class Customer extends \common\models\Customer
             'branch_code'=>'รหัสสาขา',
             'is_head_quater' => 'สำนักงานใหญ่',
             'branch_name' => 'ชื่อสาขา',
-            'latlong' => 'แผนที่',
+            'latlong' => 'แผนที่(พิกัด)',
             'crated_at' => 'สร้างเมื่อ',
             'created_by' => 'สร้างโดย',
             'updated_at' => 'แก้ไขเมื่อ',

@@ -49,7 +49,6 @@ class Company extends \yii\db\ActiveRecord
             'name' => 'Name',
             'description' => 'Description',
             'status' => 'Status',
-            'show_expired_date' => 'แสดงวันที่หมดอายุ',
             'created_at' => 'Created At',
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',

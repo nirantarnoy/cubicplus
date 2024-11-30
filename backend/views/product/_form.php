@@ -83,16 +83,30 @@ if (\Yii::$app->session->hasFlash('msg-error')) {
                 <?= $form->field($model, 'sale_price')->textInput() ?>
             </div>
             <div class="col-lg-3">
-                <?= $form->field($model, 'warranty_expired_date')->widget(\kartik\date\DatePicker::className(), [
+                <?php $model->warranty_start_date = $model->isNewRecord ? date('d-m-Y') : date('d-m-Y', strtotime($model->warranty_start_date)); ?>
+                <?= $form->field($model, 'warranty_start_date')->widget(\kartik\date\DatePicker::className(), [
+                    'options' => [
+                       // 'format' => 'dd-mm-yyyy',
+                    ],
                     'pluginOptions' => [
-                        'format' => 'dd-mm-yyyy',
                         'autoclose' => true,
+                        'todayHighlight' => true,
+                        'format' => 'dd-mm-yyyy',
                     ]
                 ]) ?>
             </div>
         </div>
         <div class="row">
-
+            <div class="col-lg-3">
+                <?php $model->warranty_expired_date = $model->isNewRecord ? date('d-m-Y') : date('d-m-Y', strtotime($model->warranty_expired_date)); ?>
+                <?= $form->field($model, 'warranty_expired_date')->widget(\kartik\date\DatePicker::className(), [
+                    'pluginOptions' => [
+                        'format' => 'dd-mm-yyyy',
+                        'autoclose' => true,
+                        'todayHighlight' => true,
+                    ]
+                ]) ?>
+            </div>
             <div class="col-lg-3">
                 <?php echo $form->field($model, 'status')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
             </div>

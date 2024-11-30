@@ -44,7 +44,7 @@ class Product extends \yii\db\ActiveRecord
             [['product_category_id', 'unit_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by','is_company_product','distributor_id','inventory_status','brand_id'], 'integer'],
             [['cost', 'sale_price', 'commission'], 'number'],
             [['sku', 'name', 'description', 'photo', 'remark','photo_2','photo_3','brand_name','serial_no'], 'string', 'max' => 255],
-            [['receive_date','warranty_expired_date'],'safe'],
+            [['receive_date','warranty_expired_date','warranty_start_date'],'safe'],
         ];
     }
 

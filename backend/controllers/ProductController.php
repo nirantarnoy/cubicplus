@@ -118,9 +118,26 @@ class ProductController extends Controller
                 $line_qty = \Yii::$app->request->post('line_qty');
                 $line_exp_date = \Yii::$app->request->post('line_exp_date');
 
+                $exp = explode('-',$model->warranty_expired_date);
+                $exp2 = explode('-',$model->warranty_start_date);
+                $w_start_date = date('Y-m-d');
+                $w_exp_date = date('Y-m-d');
+                if($exp!=null){
+                    if(count($exp)>1){
+                        $w_exp_date = $exp[2].'-'.$exp[1].'-'.$exp[0];
+                    }
+                }
+                if($exp2!=null){
+                    if(count($exp2)>1){
+                        $w_start_date = $exp2[2].'-'.$exp2[1].'-'.$exp2[0];
+                    }
+                }
 
-               //  $model->code = $model->sku;
+
+                //  $model->code = $model->sku;
                //  $model->is_special = 0;
+                $model->warranty_expired_date = date('Y-m-d',strtotime($w_exp_date));
+                $model->warranty_start_date = date('Y-m-d',strtotime($w_start_date));
                 if ($model->save(false)) {
                     $uploaded = UploadedFile::getInstanceByName('product_photo');
                     $uploaded2 = UploadedFile::getInstanceByName('product_photo_2');
@@ -225,8 +242,26 @@ class ProductController extends Controller
             $line_include_vat = \Yii::$app->request->post('line_include_vat');
             $removecustomerlist = \Yii::$app->request->post('remove_customer_list');
 
-            //  print_r($line_customer_rec_id);return;
-           // $model->code = $model->sku;
+            $exp = explode('-',$model->warranty_expired_date);
+            $exp2 = explode('-',$model->warranty_start_date);
+            $w_start_date = date('Y-m-d');
+            $w_exp_date = date('Y-m-d');
+            if($exp!=null){
+                if(count($exp)>1){
+                    $w_exp_date = $exp[2].'-'.$exp[1].'-'.$exp[0];
+                }
+            }
+            if($exp2!=null){
+                if(count($exp2)>1){
+                    $w_start_date = $exp2[2].'-'.$exp2[1].'-'.$exp2[0];
+                }
+            }
+
+
+            //  $model->code = $model->sku;
+            //  $model->is_special = 0;
+            $model->warranty_expired_date = date('Y-m-d',strtotime($w_exp_date));
+            $model->warranty_start_date = date('Y-m-d',strtotime($w_start_date));
             if ($model->save(false)) {
                 if (!empty($uploaded)) {
                     $upfiles = "photo_" . time() . "." . $uploaded->getExtension();

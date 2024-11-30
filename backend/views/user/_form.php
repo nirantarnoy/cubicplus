@@ -36,6 +36,19 @@ use yii\widgets\ActiveForm;
                 ]
             ])->label('พนักงาน') ?>
 
+            <?= $form->field($model, 'is_distributor')->widget(\kartik\select2\Select2::className(), [
+                'data' => \yii\helpers\ArrayHelper::map(\backend\helpers\YesnoType::asArrayObject(), 'id','name'),
+            ])->label('User สำหรับผู้จัดจำหน่าย') ?>
+
+            <?= $form->field($model, 'distributor_id')->widget(\kartik\select2\Select2::className(), [
+                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Distributor::find()->all(), 'id', function ($data) {
+                    return $data->name;
+                }),
+                'options' => [
+                    'placeholder' => '--เลือกผู้จัดจำหน่าย--'
+                ]
+            ])->label('ผู้จัดจำหน่าย') ?>
+
 
             <?= $form->field($model, 'status')->widget(\toxor88\switchery\Switchery::className())->label(false) ?>
 

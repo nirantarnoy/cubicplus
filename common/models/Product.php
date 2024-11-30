@@ -41,9 +41,10 @@ class Product extends \yii\db\ActiveRecord
     {
         return [
             [['name','sku'],'required'],
-            [['product_category_id', 'unit_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
+            [['product_category_id', 'unit_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by','is_company_product','distributor_id','inventory_status','brand_id'], 'integer'],
             [['cost', 'sale_price', 'commission'], 'number'],
-            [['sku', 'name', 'description', 'photo', 'remark'], 'string', 'max' => 255],
+            [['sku', 'name', 'description', 'photo', 'remark','photo_2','photo_3','brand_name','serial_no'], 'string', 'max' => 255],
+            [['receive_date','warranty_expired_date'],'safe'],
         ];
     }
 
@@ -64,7 +65,14 @@ class Product extends \yii\db\ActiveRecord
             'sale_price' => 'ราคาขาย',
             'commission' => 'Commission',
             'remark' => 'Remark',
-            'status' => 'Status',
+            'status' => 'สถานะใช้งาน',
+            'is_company_product'=>'is_company_product',
+            'distributor_id'=>'ผู้จัดจำหน่าย',
+            'inventory_status'=>'สถานะคลัง',
+            'serial_no'=>'Serial No',
+            'receive_date'=> 'วันที่รับสินค้า',
+            'brand_id'=>'ยี่ห้อ',
+            'branch_name'=>'ชื่อยี่ห้อ',
             'created_at' => 'Created At',
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',

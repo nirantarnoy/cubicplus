@@ -87,6 +87,22 @@ class SiteController extends Controller
             // return $this->goBack();
             $model_user_info = \backend\models\User::find()->where(['id' => \Yii::$app->user->id])->one();
             if($model_user_info){
+
+                // create log
+
+                $clientIp = $this->getClientIpAddress();
+
+                 $model_new_log = new \backend\models\Systemlog();
+                 $model_new_log->log_type_id = 1; // 1 access log 2 Error log 3 Audit log
+                 $model_new_log->trans_date = date('Y-m-d H:i:s');
+                 $model_new_log->login_act_type = 1; // 1 login 2 logout
+                 $model_new_log->message = 'login';
+                 $model_new_log->user_id = \Yii::$app->user->id;
+                 $model_new_log->ipaddress = $clientIp;
+                 $model_new_log->save(false);
+
+
+                //
                 if($model_user_info->user_group_id == 3){
                     \Yii::$app->user->logout();
                 }
@@ -115,11 +131,20 @@ class SiteController extends Controller
      */
     public function actionLogout()
     {
+        $user_id = \Yii::$app->user->id;
         \Yii::$app->user->logout();
 
 //        if(isset($_SESSION['driver_login'])){
 //            return $this->redirect(['site/logindriver']);
 //        }
+
+        $model_new_log = new \backend\models\Systemlog();
+        $model_new_log->log_type_id = 1; // 1 access log 2 Error log 3 Audit log
+        $model_new_log->trans_date = date('Y-m-d H:i:s');
+        $model_new_log->login_act_type = 2; // 1 login 2 logout
+        $model_new_log->message = 'logout';
+        $model_new_log->user_id = $user_id;
+        $model_new_log->save(false);
 
         return $this->goHome();
     }
@@ -294,6 +319,23 @@ class SiteController extends Controller
         }
         // print_r($aControllers['AdjustmentController']);
 
+    }
+
+    private function getClientIpAddress(): string {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            // IP from shared internet
+            return $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            // IP passed from a proxy
+            $ipList = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            return trim($ipList[0]); // Use the first IP in the list
+        } elseif (!empty($_SERVER['REMOTE_ADDR'])) {
+            // IP directly from remote address
+            return $_SERVER['REMOTE_ADDR'];
+        }
+
+        // Return an empty string if no IP found
+        return '';
     }
 
 }

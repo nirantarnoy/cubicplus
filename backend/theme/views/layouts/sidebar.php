@@ -138,12 +138,20 @@
                         </li>
                         <?php //endif; ?>
                         <?php //if (\Yii::$app->user->can('employee/index')): ?>
-                            <li class="nav-item">
-                                <a href="index.php?r=employee/index" class="nav-link employee">
-                                    <i class="far fa-circlez nav-icon"></i>
-                                    <p>พนักงาน</p>
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a href="index.php?r=employee/index" class="nav-link employee">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>พนักงาน</p>
+                            </a>
+                        </li>
+                        <?php //endif; ?>
+                        <?php //if (\Yii::$app->user->can('employee/index')): ?>
+                        <li class="nav-item">
+                            <a href="index.php?r=distributor/index" class="nav-link distributor">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>ผู้จัดจำหน่าย</p>
+                            </a>
+                        </li>
                         <?php //endif; ?>
                     </ul>
                 </li>

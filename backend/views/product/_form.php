@@ -13,230 +13,285 @@ use yii\web\Session;
 $data_warehouse = \backend\models\Warehouse::find()->all();
 $data_customer = \backend\models\Customer::find()->all();
 
-$yesno = [['id'=>1,'YES'],['id'=>0,'NO']];
+$yesno = [['id' => 1, 'YES'], ['id' => 0, 'NO']];
 $msg = 0;
-if(\Yii::$app->session->hasFlash('msg-success')){
+if (\Yii::$app->session->hasFlash('msg-success')) {
     $msg = 1;
 }
-if(\Yii::$app->session->hasFlash('msg-error')){
+if (\Yii::$app->session->hasFlash('msg-error')) {
     $msg = 2;
 }
 //echo $msg;
 ?>
 
-<div class="product-form">
-    <input type="hidden" class="msg-result" value="<?=$msg?>">
-    <?php $form = ActiveForm::begin(['options' => ['enctype'=>'multipart/form-data']]); ?>
-    <input type="hidden" class="remove-list" name="remove_list" value="">
-    <input type="hidden" class="remove-customer-list" name="remove_customer_list" value="">
-    <div class="row">
-        <div class="col-lg-3">
-            <?= $form->field($model, 'sku')->textInput(['maxlength' => true]) ?>
+    <div class="product-form">
+        <input type="hidden" class="msg-result" value="<?= $msg ?>">
+        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+        <input type="hidden" class="remove-list" name="remove_list" value="">
+        <input type="hidden" class="remove-customer-list" name="remove_customer_list" value="">
+        <div class="row">
+            <div class="col-lg-3">
+                <?= $form->field($model, 'sku')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'barcode')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-lg-6">
+                <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+            </div>
         </div>
-        <div class="col-lg-3">
-            <?= $form->field($model, 'barcode')->textInput(['maxlength' => true]) ?>
+        <div class="row">
+            <div class="col-lg-6">
+                <?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'serial_no')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'receive_date')->widget(\kartik\date\DatePicker::className(), [
+                    'options' => [
+                        'readonly' => true,
+                    ],
+                    'pluginOptions' => [
+                        'format' => 'dd-mm-yyyy',
+                        'autoclose' => true,
+                    ]
+                ]) ?>
+            </div>
         </div>
-        <div class="col-lg-6">
-            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
-        </div>
-        <div class="col-lg-6">
+        <div class="row">
+            <div class="col-lg-3">
+                <?= $form->field($model, 'product_category_id')->widget(\kartik\select2\Select2::className(), [
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Productcategory::find()->all(), 'id', 'name'),
+                    'options' => [
 
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ]
+                ]) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'unit_id')->widget(\kartik\select2\Select2::className(), [
+                    'data' => ArrayHelper::map(\backend\models\Unit::find()->all(), 'id', 'name'),
+                    'options' => [
+                        'placeholder' => '-- เลือกหน่วยนับ --',
+                    ]
+                ]) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'sale_price')->textInput() ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'warranty_expired_date')->widget(\kartik\date\DatePicker::className(), [
+                    'pluginOptions' => [
+                        'format' => 'dd-mm-yyyy',
+                        'autoclose' => true,
+                    ]
+                ]) ?>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-3">
-            <?= $form->field($model, 'product_category_id')->widget(\kartik\select2\Select2::className(), [
-                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Productcategory::find()->all(), 'id', 'name'),
-                'options' => [
+        <div class="row">
 
-                ],
-                'pluginOptions' => [
-                    'allowClear' => true,
-                ]
-            ]) ?>
+            <div class="col-lg-3">
+                <?php echo $form->field($model, 'status')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
+            </div>
+            <div class="col-lg-3"></div>
         </div>
-        <div class="col-lg-3">
-        <?= $form->field($model, 'unit_id')->widget(\kartik\select2\Select2::className(),[
-                'data'=>ArrayHelper::map(\backend\models\Unit::find()->all(), 'id', 'name'),
-                'options' => [
-                        'placeholder'=>'-- เลือกหน่วยนับ --',
-                ]
-        ]) ?>
-        </div>
-        <div class="col-lg-3">
-            <?= $form->field($model, 'sale_price')->textInput() ?>
-        </div>
-    </div>
-    <div class="row">
-
-        <div class="col-lg-3">
-            <?php echo $form->field($model, 'status')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
-        </div>
-        <div class="col-lg-3"></div>
-    </div>
-    <br />
-    <div class="row">
-        <div class="col-lg-6">
-            <label for="">รูปภาพ</label>
-            <?php if ($model->isNewRecord): ?>
-                <table style="width: 100%">
-                    <tr>
-                        <td style="border: 1px dashed grey;height: 250px;text-align: center;">
-                            <i class="fa fa-ban fa-lg" style="color: grey"></i>
-                            <span style="color: lightgrey">ไม่พบไฟล์แนบ</span>
-                        </td>
-                    </tr>
-                </table>
-            <?php else: ?>
-                <table style="width: 100%">
-                    <tr>
-                        <?php if ($model->photo != ''): ?>
-                            <td style="border: 1px dashed grey;height: 250px;text-align: center;">
-                                <a href="<?= \Yii::$app->getUrlManager()->baseUrl . '/uploads/product_photo/' . $model->photo ?>"
-                                   target="_blank"><img
-                                            src="<?= \Yii::$app->getUrlManager()->baseUrl . '/uploads/product_photo/' . $model->photo ?>"
-                                            style="max-width: 130px;margin-top: 5px;" alt=""></a>
-                            </td>
-                        <?php else: ?>
-                            <td style="border: 1px dashed grey;height: 250px;text-align: center;">
-                                <i class="fa fa-ban fa-lg" style="color: grey"></i>
-                                <span style="color: lightgrey">ไม่พบไฟล์แนบ</span>
-                            </td>
-                        <?php endif; ?>
-                    </tr>
-                </table>
-            <?php endif; ?>
-            <input type="file" name="product_photo" class="form-control">
-        </div>
-        <div class="col-lg-6">
-            <label for="">รูปภาพ</label>
-            <?php if ($model->isNewRecord): ?>
-                <table style="width: 100%">
-                    <tr>
-                        <td style="border: 1px dashed grey;height: 250px;text-align: center;">
-                            <i class="fa fa-ban fa-lg" style="color: grey"></i>
-                            <span style="color: lightgrey">ไม่พบไฟล์แนบ</span>
-                        </td>
-                    </tr>
-                </table>
-            <?php else: ?>
-                <table style="width: 100%">
-                    <tr>
-                        <?php if ($model->photo_2 != ''): ?>
-                            <td style="border: 1px dashed grey;height: 250px;text-align: center;">
-                                <a href="<?= \Yii::$app->getUrlManager()->baseUrl . '/uploads/product_photo/' . $model->photo_2 ?>"
-                                   target="_blank"><img
-                                            src="<?= \Yii::$app->getUrlManager()->baseUrl . '/uploads/product_photo/' . $model->photo_2 ?>"
-                                            style="max-width: 130px;margin-top: 5px;" alt=""></a>
-                            </td>
-                        <?php else: ?>
+        <br/>
+        <div class="row">
+            <div class="col-lg-4">
+                <label for="">รูปภาพ</label>
+                <?php if ($model->isNewRecord): ?>
+                    <table style="width: 100%">
+                        <tr>
                             <td style="border: 1px dashed grey;height: 250px;text-align: center;">
                                 <i class="fa fa-ban fa-lg" style="color: grey"></i>
                                 <span style="color: lightgrey">ไม่พบไฟล์แนบ</span>
                             </td>
-                        <?php endif; ?>
+                        </tr>
+                    </table>
+                <?php else: ?>
+                    <table style="width: 100%">
+                        <tr>
+                            <?php if ($model->photo != ''): ?>
+                                <td style="border: 1px dashed grey;height: 250px;text-align: center;">
+                                    <a href="<?= \Yii::$app->getUrlManager()->baseUrl . '/uploads/product_photo/' . $model->photo ?>"
+                                       target="_blank"><img
+                                                src="<?= \Yii::$app->getUrlManager()->baseUrl . '/uploads/product_photo/' . $model->photo ?>"
+                                                style="max-width: 130px;margin-top: 5px;" alt=""></a>
+                                </td>
+                            <?php else: ?>
+                                <td style="border: 1px dashed grey;height: 250px;text-align: center;">
+                                    <i class="fa fa-ban fa-lg" style="color: grey"></i>
+                                    <span style="color: lightgrey">ไม่พบไฟล์แนบ</span>
+                                </td>
+                            <?php endif; ?>
+                        </tr>
+                    </table>
+                <?php endif; ?>
+                <input type="file" name="product_photo" class="form-control">
+            </div>
+            <div class="col-lg-4">
+                <label for="">รูปภาพ</label>
+                <?php if ($model->isNewRecord): ?>
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="border: 1px dashed grey;height: 250px;text-align: center;">
+                                <i class="fa fa-ban fa-lg" style="color: grey"></i>
+                                <span style="color: lightgrey">ไม่พบไฟล์แนบ</span>
+                            </td>
+                        </tr>
+                    </table>
+                <?php else: ?>
+                    <table style="width: 100%">
+                        <tr>
+                            <?php if ($model->photo_2 != ''): ?>
+                                <td style="border: 1px dashed grey;height: 250px;text-align: center;">
+                                    <a href="<?= \Yii::$app->getUrlManager()->baseUrl . '/uploads/product_photo/' . $model->photo_2 ?>"
+                                       target="_blank"><img
+                                                src="<?= \Yii::$app->getUrlManager()->baseUrl . '/uploads/product_photo/' . $model->photo_2 ?>"
+                                                style="max-width: 130px;margin-top: 5px;" alt=""></a>
+                                </td>
+                            <?php else: ?>
+                                <td style="border: 1px dashed grey;height: 250px;text-align: center;">
+                                    <i class="fa fa-ban fa-lg" style="color: grey"></i>
+                                    <span style="color: lightgrey">ไม่พบไฟล์แนบ</span>
+                                </td>
+                            <?php endif; ?>
+                        </tr>
+                    </table>
+                <?php endif; ?>
+                <input type="file" name="product_photo_2" class="form-control">
+            </div>
+            <div class="col-lg-4">
+                <label for="">รูปภาพ</label>
+                <?php if ($model->isNewRecord): ?>
+                    <table style="width: 100%">
+                        <tr>
+                            <td style="border: 1px dashed grey;height: 250px;text-align: center;">
+                                <i class="fa fa-ban fa-lg" style="color: grey"></i>
+                                <span style="color: lightgrey">ไม่พบไฟล์แนบ</span>
+                            </td>
+                        </tr>
+                    </table>
+                <?php else: ?>
+                    <table style="width: 100%">
+                        <tr>
+                            <?php if ($model->photo_3 != ''): ?>
+                                <td style="border: 1px dashed grey;height: 250px;text-align: center;">
+                                    <a href="<?= \Yii::$app->getUrlManager()->baseUrl . '/uploads/product_photo/' . $model->photo_3 ?>"
+                                       target="_blank"><img
+                                                src="<?= \Yii::$app->getUrlManager()->baseUrl . '/uploads/product_photo/' . $model->photo_3 ?>"
+                                                style="max-width: 130px;margin-top: 5px;" alt=""></a>
+                                </td>
+                            <?php else: ?>
+                                <td style="border: 1px dashed grey;height: 250px;text-align: center;">
+                                    <i class="fa fa-ban fa-lg" style="color: grey"></i>
+                                    <span style="color: lightgrey">ไม่พบไฟล์แนบ</span>
+                                </td>
+                            <?php endif; ?>
+                        </tr>
+                    </table>
+                <?php endif; ?>
+                <input type="file" name="product_photo_3" class="form-control">
+            </div>
+
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4>จัดการสต๊อกสินค้า</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered table-striped" id="table-list">
+                    <thead>
+                    <tr>
+                        <th style="text-align: center;">ที่จัดเก็บ</th>
+                        <th style="text-align: center;">จำนวนคงเหลือ</th>
+                        <th>-</th>
                     </tr>
+                    </thead>
+                    <tbody>
+                    <?php if ($model_line != null): ?>
+                        <?php foreach ($model_line as $value): ?>
+                            <tr data-var="<?= $value->id; ?>">
+                                <td>
+                                    <input type="hidden" class="form-control line-rec-id" name="line_rec_id[]"
+                                           value="<?= $value->id ?>">
+                                    <select name="warehouse_id[]" id="" class="form-control line-warehouse-id">
+                                        <option value="-1">--เลือก-</option>
+                                        <?php foreach ($data_warehouse as $xvalue): ?>
+                                            <?php
+                                            $selected = '';
+                                            if ($value->warehouse_id == $xvalue->id) {
+                                                $selected = 'selected';
+                                            }
+                                            ?>
+                                            <option value="<?= $xvalue->id ?>" <?= $selected ?>><?= $xvalue->name ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control line-qty" name="line_qty[]"
+                                           value="<?= $value->qty ?>">
+                                </td>
+                                <td>
+                                    <div class="btn btn-danger" onclick="removeline($(this))"><i
+                                                class="fa fa-trash"></i></div>
+                                </td>
+
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr data-var="">
+                            <td>
+                                <!--                            <input type="text" class="form-control line-warehouse-id" name="warehouse_id[]" value="">-->
+                                <input type="hidden" class="form-control line-rec-id" name="line_rec_id[]" value="0">
+                                <select name="warehouse_id[]" id="" class="form-control line-warehouse-id">
+                                    <option value="-1">--เลือก-</option>
+                                    <?php foreach ($data_warehouse as $xvalue): ?>
+                                        <option value="<?= $xvalue->id ?>"><?= $xvalue->name ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control line-qty" name="line_qty[]" value="">
+                            </td>
+                            <td>
+                                <div class="btn btn-danger" onclick="removeline($(this))"><i class="fa fa-trash"></i>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="3" style="text-align: left;">
+                            <div class="btn btn-sm btn-primary" onclick="addline($(this))">เพิ่ม</div>
+                        </td>
+                    </tr>
+                    </tfoot>
                 </table>
-            <?php endif; ?>
-            <input type="file" name="product_photo_2" class="form-control">
+            </div>
+        </div>
+        <br/>
+
+
+        <div class="form-group">
+            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
         </div>
 
+        <?php ActiveForm::end(); ?>
+
     </div>
-    <br />
-    <div class="row">
-        <div class="col-lg-12">
-            <h4>จัดการสต๊อกสินค้า</h4>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12">
-            <table class="table table-bordered table-striped" id="table-list">
-                <thead>
-                <tr>
-                    <th style="text-align: center;">ที่จัดเก็บ</th>
-                    <th style="text-align: center;">จำนวนคงเหลือ</th>
-                    <th>-</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php if($model_line != null):?>
-                <?php foreach($model_line as $value):?>
-                    <tr data-var="<?=$value->id;?>">
-                        <td>
-                            <input type="hidden" class="form-control line-rec-id" name="line_rec_id[]" value="<?=$value->id?>">
-                            <select name="warehouse_id[]" id="" class="form-control line-warehouse-id">
-                                <option value="-1">--เลือก-</option>
-                                <?php foreach($data_warehouse as $xvalue):?>
-                                <?php
-                                    $selected = '';
-                                    if($value->warehouse_id == $xvalue->id){
-                                        $selected = 'selected';
-                                    }
-                                    ?>
-                                    <option value="<?=$xvalue->id?>" <?=$selected?>><?=$xvalue->name?></option>
-                                <?php endforeach;?>
-                            </select>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control line-qty" name="line_qty[]" value="<?=$value->qty?>">
-                        </td>
-                        <td>
-                            <div class="btn btn-danger" onclick="removeline($(this))"><i class="fa fa-trash"></i></div>
-                        </td>
-
-                    </tr>
-                <?php endforeach;?>
-                <?php else:?>
-                    <tr data-var="">
-                        <td>
-<!--                            <input type="text" class="form-control line-warehouse-id" name="warehouse_id[]" value="">-->
-                            <input type="hidden" class="form-control line-rec-id" name="line_rec_id[]" value="0">
-                            <select name="warehouse_id[]" id="" class="form-control line-warehouse-id">
-                                <option value="-1">--เลือก-</option>
-                                <?php foreach($data_warehouse as $xvalue):?>
-                                    <option value="<?=$xvalue->id?>"><?=$xvalue->name?></option>
-                                <?php endforeach;?>
-                            </select>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control line-qty" name="line_qty[]" value="">
-                        </td>
-                         <td>
-                             <div class="btn btn-danger" onclick="removeline($(this))"><i class="fa fa-trash"></i></div>
-                         </td>
-                    </tr>
-                <?php endif;?>
-
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="3" style="text-align: left;">
-                        <div class="btn btn-sm btn-primary" onclick="addline($(this))">เพิ่ม</div>
-                    </td>
-                </tr>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-    <br />
-
-
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
-</div>
 <?php
 $url = Url::base();
 $this->registerJsFile("$url/js/custom/showsweetalert.js", ['depends' => JqueryAsset::class]);
-$js=<<<JS
+$js = <<<JS
 var removelist = [];
 var removecustomerpricelist = [];
 $(function(){
@@ -321,5 +376,5 @@ function addcustomerpriceline(e){
 }
 
 JS;
-$this->registerJs($js,static::POS_END);
+$this->registerJs($js, static::POS_END);
 ?>

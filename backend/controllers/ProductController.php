@@ -124,6 +124,7 @@ class ProductController extends Controller
                 if ($model->save(false)) {
                     $uploaded = UploadedFile::getInstanceByName('product_photo');
                     $uploaded2 = UploadedFile::getInstanceByName('product_photo_2');
+                    $uploaded3 = UploadedFile::getInstanceByName('product_photo_3');
 
                     if (!empty($uploaded)) {
                         $upfiles = "photo_" . time() . "." . $uploaded->getExtension();
@@ -136,6 +137,13 @@ class ProductController extends Controller
                         $upfiles2 = "photo_" . time() . "." . $uploaded2->getExtension();
                         if ($uploaded2->saveAs('uploads/product_photo/' . $upfiles2)) {
                             \backend\models\Product::updateAll(['photo_2' => $upfiles2], ['id' => $model->id]);
+                        }
+
+                    }
+                    if (!empty($uploaded3)) {
+                        $upfiles3 = "photo_" . time() . "." . $uploaded3->getExtension();
+                        if ($uploaded3->saveAs('uploads/product_photo/' . $upfiles3)) {
+                            \backend\models\Product::updateAll(['photo_3' => $upfiles3], ['id' => $model->id]);
                         }
 
                     }
@@ -202,6 +210,7 @@ class ProductController extends Controller
 
             $uploaded = UploadedFile::getInstanceByName('product_photo');
             $uploaded2 = UploadedFile::getInstanceByName('product_photo_2');
+            $uploaded3 = UploadedFile::getInstanceByName('product_photo_3');
 
             $line_rec_id = \Yii::$app->request->post('line_rec_id');
             $removelist = \Yii::$app->request->post('remove_list');
@@ -233,6 +242,14 @@ class ProductController extends Controller
                     }
 
                 }
+                if (!empty($uploaded3)) {
+                    $upfiles3 = "photo_" . time() . "." . $uploaded3->getExtension();
+                    if ($uploaded3->saveAs('uploads/product_photo/' . $upfiles3)) {
+                        \backend\models\Product::updateAll(['photo_3' => $upfiles3], ['id' => $model->id]);
+                    }
+
+                }
+
                 for($i=0;$i<count($line_warehouse);$i++){
                     if($line_qty[$i] == 0){
                         continue;

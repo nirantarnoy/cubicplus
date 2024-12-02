@@ -175,6 +175,7 @@ class ProductController extends Controller
                             $model_trans->product_id = $model->id;
                             $model_trans->trans_date = date('Y-m-d H:i:s');
                             $model_trans->activity_type_id = 1; // 1 ปรับสต๊อก 2 รับเข้า 3 จ่ายออก
+                            $model_trans->warehouse_id = 1;
                             $model_trans->qty = $line_qty[$i];
                             $model_trans->status = 1;
                             if($model_trans->save(false)){
@@ -264,21 +265,21 @@ class ProductController extends Controller
             $model->warranty_start_date = date('Y-m-d',strtotime($w_start_date));
             if ($model->save(false)) {
                 if (!empty($uploaded)) {
-                    $upfiles = "photo_" . time() . "." . $uploaded->getExtension();
+                    $upfiles = "photo_1" . time() . "." . $uploaded->getExtension();
                     if ($uploaded->saveAs('uploads/product_photo/' . $upfiles)) {
                         \backend\models\Product::updateAll(['photo' => $upfiles], ['id' => $model->id]);
                     }
 
                 }
                 if (!empty($uploaded2)) {
-                    $upfiles2 = "photo_" . time() . "." . $uploaded2->getExtension();
+                    $upfiles2 = "photo_2" . time() . "." . $uploaded2->getExtension();
                     if ($uploaded2->saveAs('uploads/product_photo/' . $upfiles2)) {
                         \backend\models\Product::updateAll(['photo_2' => $upfiles2], ['id' => $model->id]);
                     }
 
                 }
                 if (!empty($uploaded3)) {
-                    $upfiles3 = "photo_" . time() . "." . $uploaded3->getExtension();
+                    $upfiles3 = "photo_3" . time() . "." . $uploaded3->getExtension();
                     if ($uploaded3->saveAs('uploads/product_photo/' . $upfiles3)) {
                         \backend\models\Product::updateAll(['photo_3' => $upfiles3], ['id' => $model->id]);
                     }
@@ -296,7 +297,7 @@ class ProductController extends Controller
                     $model_trans->activity_type_id = 1; // 1 ปรับสต๊อก 2 เบิก 3 คำสั่งซื้อ
                     $model_trans->qty = $line_qty[$i];
                     $model_trans->status = 1;
-                    if($model_trans->save(false)){
+                    if($model_trans->save()){
                   //      $model_sum = \backend\models\Stocksum::find()->where(['product_id'=>$model->id,'warehouse_id'=>$line_warehouse[$i],'expired_date'=>date('Y-m-d',strtotime($exp_date))])->one();
                        if($line_rec_id[$i] != 0){
 

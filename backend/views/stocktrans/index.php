@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => ['style' => 'text-align: right'],
                 'contentOptions' => ['style' => 'text-align: right'],
                 'value' => function ($data) {
-                    return number_format($data->qty,0);
+                    return $data->qty == null ? 0: number_format($data->qty,0);
                 }
             ],
             [

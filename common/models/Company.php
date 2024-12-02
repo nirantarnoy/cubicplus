@@ -35,7 +35,8 @@ class Company extends \yii\db\ActiveRecord
     {
         return [
             [['status', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-            [['name', 'description', 'address', 'taxid'], 'string', 'max' => 255],
+            [['name', 'description', 'address',], 'string', 'max' => 255],
+            [['taxid'], 'string', 'max' => 13],
         ];
     }
 

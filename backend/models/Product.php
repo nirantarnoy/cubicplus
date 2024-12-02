@@ -66,6 +66,10 @@ class Product extends \common\models\Product
         $model = Product::find()->where(['id'=>$id])->one();
         return $model != null ?$model->name:'';
     }
+    public static function findSerialNo($id){
+        $model = Product::find()->where(['id'=>$id])->one();
+        return $model != null ?$model->serial_no:'';
+    }
     public static function findPrice($id){
         $model = Product::find()->where(['id'=>$id])->one();
         return $model != null ?$model->sale_price:0;

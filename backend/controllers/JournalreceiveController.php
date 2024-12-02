@@ -157,7 +157,8 @@ class JournalreceiveController extends Controller
                         }
                     }
                     //$this->notifymessage($model->id,$model->journal_no,$model->created_by);
-                    return $this->redirect(['view', 'id' => $model->id]);
+                   // return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['index']);
                 }
 
             }
@@ -183,7 +184,9 @@ class JournalreceiveController extends Controller
         $model_line = \common\models\JournalReceiveLine::find()->where(['journal_rec_id' => $id])->all();
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            //return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
+
         }
 
         return $this->render('update', [

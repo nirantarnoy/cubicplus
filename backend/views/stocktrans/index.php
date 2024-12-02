@@ -43,6 +43,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'attribute' => 'product_id',
+                'label' => 'Serial No.',
+                'value' => function ($data) {
+                    return \backend\models\Product::findSerialNo($data->product_id);
+                }
+            ],
+            [
                 'attribute' => 'activity_type_id',
                 'value' => function ($data) {
                     return \backend\helpers\ActivityType::getTypeById($data->activity_type_id);

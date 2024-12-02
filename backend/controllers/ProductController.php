@@ -486,7 +486,7 @@ class ProductController extends Controller
             foreach ($model as $value) {
                 $onhand_qty = $this->getProductOnhand($value->id);
                 $code = $value->sku;
-                $name = $value->name;
+                $name = $value->serial_no;
                 $price = 0;
                 $unit_id = $value->unit_id;
                 $unit_name = \backend\models\Unit::findName($unit_id);

@@ -11,6 +11,7 @@ use backend\models\Stocksum;
  */
 class StocksumSearch extends Stocksum
 {
+    public $product_cat_id;
     /**
      * {@inheritdoc}
      */
@@ -19,7 +20,7 @@ class StocksumSearch extends Stocksum
         return [
             [['id', 'warehouse_id', 'product_id'], 'integer'],
             [['qty'], 'number'],
-            [['last_update'], 'safe'],
+            [['last_update','product_cat_id'], 'safe'],
         ];
     }
 
@@ -41,7 +42,7 @@ class StocksumSearch extends Stocksum
      */
     public function search($params)
     {
-        $query = Stocksum::find();
+        $query = Stocksum::find()->join('INNER JOIN', 'product', 'product.id = stock_sum.product_id');
 
         // add conditions that should always apply here
 
@@ -64,6 +65,10 @@ class StocksumSearch extends Stocksum
             'product_id' => $this->product_id,
             'qty' => $this->qty
         ]);
+
+        if($this->product_cat_id !=null){
+            $query->andFilterWhere(['=', 'product.product_category_id', $this->product_cat_id]);
+        }
 
         return $dataProvider;
     }

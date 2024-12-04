@@ -249,7 +249,7 @@ class DbbackupController extends Controller
         }
 
 
-        exec($cmd);
+        shell_exec($cmd);
 
         return $this->redirect(['dbbackup/backuplist']);
 

@@ -46,6 +46,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return \backend\models\Product::findName($data->product_id);
                 }
             ],
+            [
+                'attribute' => 'product_id',
+                'label' => 'ชื่อสินค้า',
+                'value' => function ($data) {
+                    return \backend\models\Product::findSerialNo($data->product_id);
+                }
+            ],
             'qty',
 
         ],

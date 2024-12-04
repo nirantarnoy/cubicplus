@@ -20,19 +20,19 @@ use yii\widgets\ActiveForm;
 
     <div class="input-group">
 
-        <?= $form->field($model, 'warehouse_id')->widget(\kartik\select2\Select2::className(), [
-            'data' => \yii\helpers\ArrayHelper::map(\backend\models\Warehouse::find()->all(), 'id', function ($data) {
-                return $data->name;
-            }),
-            'options' => [
-                'placeholder' => '--เลือกคลังสินค้า--',
-                'onchange' => 'this.form.submit();'
-            ],
-            'pluginOptions' => [
-                'allowClear' => true,
-                'width'=> '300px',
-            ]
-        ])->label(false) ?>
+<!--        --><?php //= $form->field($model, 'warehouse_id')->widget(\kartik\select2\Select2::className(), [
+//            'data' => \yii\helpers\ArrayHelper::map(\backend\models\Warehouse::find()->all(), 'id', function ($data) {
+//                return $data->name;
+//            }),
+//            'options' => [
+//                'placeholder' => '--เลือกคลังสินค้า--',
+//                'onchange' => 'this.form.submit();'
+//            ],
+//            'pluginOptions' => [
+//                'allowClear' => true,
+//                'width'=> '300px',
+//            ]
+//        ])->label(false) ?>
         <span style="margin-left: 5px;"></span>
         <?= $form->field($model, 'product_id')->widget(\kartik\select2\Select2::className(), [
             'data' => \yii\helpers\ArrayHelper::map(\backend\models\Product::find()->where(['status'=>1])->all(), 'id', function ($data) {

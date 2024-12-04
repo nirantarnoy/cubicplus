@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'sku',
             'name',
-            'barcode',
+            'serial_no',
            // 'product_type_id',
             [
                 'attribute' => 'product_category_id',

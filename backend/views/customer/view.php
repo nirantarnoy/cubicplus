@@ -33,7 +33,20 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'id',
             'code',
             'name',
+            'first_name',
+            'last_name',
             'business_type',
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'value' => function ($data) {
+                    if ($data->status == 1) {
+                        return '<div class="badge badge-success" >ใช้งาน</div>';
+                    } else {
+                        return '<div class="badge badge-secondary" >ไม่ใช้งาน</div>';
+                    }
+                }
+            ],
 //            'status',
 //            'district';
         ],

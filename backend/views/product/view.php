@@ -50,7 +50,6 @@ $this->params['breadcrumbs'][] = $this->title;
                return $data->receive_date == null ? '': date('d-m-Y',strtotime($data->receive_date));
             }],
             'brand_id',
-            'brand_name',
             [
                 'attribute' => 'status',
                 'format' => 'raw',
@@ -64,6 +63,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
           //  'last_price',
             'std_price',
+            'commission',
+            'remark',
           //  'company_id',
         ],
     ]) ?>

@@ -34,12 +34,12 @@ use yii\widgets\ActiveForm;
 //            ]
 //        ])->label(false) ?>
         <span style="margin-left: 5px;"></span>
-        <?= $form->field($model, 'product_id')->widget(\kartik\select2\Select2::className(), [
-            'data' => \yii\helpers\ArrayHelper::map(\backend\models\Product::find()->where(['status'=>1])->all(), 'id', function ($data) {
-                return $data->sku . ' ' . $data->name;
+        <?= $form->field($model, 'product_cat_id')->widget(\kartik\select2\Select2::className(), [
+            'data' => \yii\helpers\ArrayHelper::map(\backend\models\Productcategory::find()->where(['status'=>1])->all(), 'id', function ($data) {
+                return $data->name;
             }),
             'options' => [
-                'placeholder' => '--เลือกสินค้า--',
+                'placeholder' => '--เลือกประเภทสินค้า--',
                 'onchange' => 'this.form.submit();'
             ],
             'pluginOptions' => [

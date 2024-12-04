@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
          //   'id',
-            'code',
+            'sku',
             'name',
             'serial_no',
             'description',
@@ -40,6 +40,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     return \backend\models\Productcategory::findName($data->product_category_id);
                 }
             ],
+            [
+                'attribute' => 'unit_id',
+                'value' => function ($data) {
+                    return \backend\models\Unit::findName($data->unit_id);
+                }
+            ],
+            ['attribute' => 'receive_date','value'=>function($data){
+               return $data->receive_date == null ? '': date('d-m-Y',strtotime($data->receive_date));
+            }],
+            'brand_id',
+            'brand_name',
             [
                 'attribute' => 'status',
                 'format' => 'raw',

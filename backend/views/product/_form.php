@@ -34,19 +34,36 @@ if (\Yii::$app->session->hasFlash('msg-error')) {
                 <?= $form->field($model, 'sku')->textInput(['maxlength' => true]) ?>
             </div>
             <div class="col-lg-3">
-                <?= $form->field($model, 'barcode')->textInput(['maxlength' => true]) ?>
-            </div>
-            <div class="col-lg-6">
                 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
             </div>
             <div class="col-lg-3">
                 <?= $form->field($model, 'serial_no')->textInput(['maxlength' => true]) ?>
             </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'product_category_id')->widget(\kartik\select2\Select2::className(), [
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Productcategory::find()->all(), 'id', 'name'),
+                    'options' => [
+
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ]
+                ]) ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <?= $form->field($model, 'unit_id')->widget(\kartik\select2\Select2::className(), [
+                    'data' => ArrayHelper::map(\backend\models\Unit::find()->all(), 'id', 'name'),
+                    'options' => [
+                        'placeholder' => '-- เลือกหน่วยนับ --',
+                    ]
+                ]) ?>
+            </div>
+            <div class="col-lg-6">
+                <?= $form->field($model, 'description')->textarea(['maxlength' => true]) ?>
+            </div>
+
             <div class="col-lg-3">
                 <?= $form->field($model, 'receive_date')->widget(\kartik\date\DatePicker::className(), [
                     'options' => [
@@ -61,26 +78,13 @@ if (\Yii::$app->session->hasFlash('msg-error')) {
         </div>
         <div class="row">
             <div class="col-lg-3">
-                <?= $form->field($model, 'product_category_id')->widget(\kartik\select2\Select2::className(), [
-                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Productcategory::find()->all(), 'id', 'name'),
-                    'options' => [
-
-                    ],
-                    'pluginOptions' => [
-                        'allowClear' => true,
-                    ]
-                ]) ?>
-            </div>
-            <div class="col-lg-3">
-                <?= $form->field($model, 'unit_id')->widget(\kartik\select2\Select2::className(), [
-                    'data' => ArrayHelper::map(\backend\models\Unit::find()->all(), 'id', 'name'),
-                    'options' => [
-                        'placeholder' => '-- เลือกหน่วยนับ --',
-                    ]
-                ]) ?>
+                <?= $form->field($model, 'cost_price')->textInput() ?>
             </div>
             <div class="col-lg-3">
                 <?= $form->field($model, 'sale_price')->textInput() ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'commission')->textInput() ?>
             </div>
             <div class="col-lg-3">
                 <?php $model->warranty_start_date = $model->isNewRecord ? date('d-m-Y') : date('d-m-Y', strtotime($model->warranty_start_date)); ?>
@@ -110,7 +114,12 @@ if (\Yii::$app->session->hasFlash('msg-error')) {
             <div class="col-lg-3">
                 <?php echo $form->field($model, 'status')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
             </div>
-            <div class="col-lg-3"></div>
+
+                <div class="col-lg-3">
+                    <?= $form->field($model, 'inventory_status')->textInput(['readonly'=>'readonly']) ?>
+                </div>
+
+
         </div>
         <br/>
         <div class="row">

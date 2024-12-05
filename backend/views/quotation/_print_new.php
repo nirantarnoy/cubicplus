@@ -39,6 +39,11 @@
                                        <b><h5>QUOTATION</h5></b>
                                    </td>
                                </tr>
+                               <tr>
+                                   <td style="text-align: right;">
+                                       <b>หน้า <span class="show-page-no">1/1</span></b>
+                                   </td>
+                               </tr>
                            </table>
                         </td>
 

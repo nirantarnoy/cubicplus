@@ -78,7 +78,7 @@ if (\Yii::$app->session->hasFlash('msg-error')) {
         </div>
         <div class="row">
             <div class="col-lg-3">
-                <?= $form->field($model, 'cost_price')->textInput() ?>
+                <?= $form->field($model, 'cost')->textInput() ?>
             </div>
             <div class="col-lg-3">
                 <?= $form->field($model, 'sale_price')->textInput() ?>

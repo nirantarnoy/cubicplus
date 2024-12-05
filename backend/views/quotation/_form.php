@@ -55,7 +55,7 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
         </div>
         <div class="col-lg-3">
             <label for="">สถานะ</label>
-            <input type="text" class="form-control" readonly value="">
+            <input type="text" class="form-control" readonly value="Opened">
             <?= $form->field($model, 'status')->hiddenInput()->label(false) ?>
         </div>
         <div class="col-lg-3">
@@ -71,7 +71,9 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
         <div class="col-lg-3">
             <?= $form->field($model, 'revise_no')->textInput(['maxlength' => true,'readonly'=>'readonly']) ?>
         </div>
-        <div class="col-lg-3"></div>
+        <div class="col-lg-3">
+            <?= $form->field($model, 'due_date_amt')->textInput(['maxlength' => true]) ?>
+        </div>
     </div>
     <br/>
     <div class="row">
@@ -81,9 +83,8 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
                 <tr>
                     <th style="width: 5%;text-align: center;">#</th>
                     <th>รหัสสินค้า</th>
-                    <th>ชื่อสินค้า</th>
-                    <th>Size</th>
-                    <th>Mat</th>
+                    <th>SerialNo</th>
+                    <th>รายละเอียด</th>
                     <th style="text-align: right;">จำนวน</th>
                     <th style="text-align: center;">หน่วยนับ</th>
                     <th style="text-align: right;width:10%">ราคา</th>
@@ -106,10 +107,6 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
                         </td>
                         <td>
                             <input type="text" class="form-control line-product-name" name="line_product_name[]"
-                                   value="">
-                        </td>
-                        <td>
-                            <input type="text" class="form-control line-product-size" name="line_product_size[]"
                                    value="">
                         </td>
                         <td>
@@ -146,11 +143,13 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
                         </td>
                     </tr>
                 <?php else: ?>
+                <?php $line_num =0;?>
                     <?php if ($model_line != null): ?>
                         <?php foreach ($model_line as $value): ?>
+                            <?php $line_num +=1;?>
                             <tr data-var="<?= $value->id ?>">
                                 <td style="text-align: center;">
-                                    <input type="text" class="form-control" readonly>
+                                    <input type="text" style="text-align: center;" class="form-control" readonly value="<?=$line_num?>">
                                 </td>
                                 <td>
                                     <input type="hidden" class="line-rec-id" name="line_recid[]"
@@ -163,11 +162,7 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
                                 </td>
                                 <td>
                                     <input type="text" class="form-control line-product-name" name="line_product_name[]"
-                                           value="<?= $value->product_name != '' ? $value->product_name: \backend\models\Product::findName($value->product_id) ?>" <?=check_is_drummy($value->product_id) == 1 ?'':'readonly'?>>
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control line-product-size" name="line_product_size[]"
-                                           value="<?=$value->size_desc?>">
+                                           value="<?= $value->product_name != '' ? $value->product_name: \backend\models\Product::findSerialNo($value->product_id) ?>" <?=check_is_drummy($value->product_id) == 1 ?'':'readonly'?>>
                                 </td>
                                 <td>
                                     <input type="text" class="form-control line-product-mat" name="line_product_mat[]"
@@ -231,10 +226,7 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
                                 <input type="text" class="form-control line-product-name" name="line_product_name[]"
                                        value="">
                             </td>
-                            <td>
-                                <input type="text" class="form-control line-product-size" name="line_product_size[]"
-                                       value="">
-                            </td>
+
                             <td>
                                 <input type="text" class="form-control line-product-mat" name="line_product_mat[]"
                                        value="">
@@ -275,7 +267,7 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
                     <td>
                         <div class="btn btn-sm btn-primary" onclick="finditem();"><i class="fa fa-plus"></i></div>
                     </td>
-                    <td colspan="7">
+                    <td colspan="6">
                         
                     </td>
                     <td><input type="text" class="form-control all-total" style="text-align: right" readonly value="0"></td>
@@ -297,10 +289,10 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
         </div>
         <div class="col-lg-6" style="text-align: right">
             <?php if (!$model->isNewRecord): ?>
-                <a class="btn btn-secondary"
+                <a class="btn btn-info"
                    href="index.php?r=quotation/print&id=<?= $model->id; ?>">พิมพ์ใบเสนอราคา</a>
                 <?php if (check_has_order($model->id) == 0): ?>
-                    <a class="btn btn-warning" href="index.php?r=quotation/converttoso&id=<?= $model->id; ?>">สร้างใบสั่งซื้อลูกค้า</a>
+<!--                    <a class="btn btn-warning" href="index.php?r=quotation/converttoso&id=--><?php //= $model->id; ?><!--">สร้างใบสั่งซื้อลูกค้า</a>-->
                 <?php endif; ?>
             <?php endif; ?>
         </div>

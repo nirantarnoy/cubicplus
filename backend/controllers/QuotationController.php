@@ -184,7 +184,7 @@ class QuotationController extends Controller
                             $model_line->line_price = $line_price[$i];
                             $model_line->line_total = $line_total_new;
                             $model_line->product_name = $line_product_name[$i];
-                            $model_line->size_desc = $line_product_size[$i];
+                          //  $model_line->size_desc = $line_product_size[$i];
                             $model_line->mat_desc = $line_product_mat[$i];
                          //   $model_line->photo = $fine_data_name_to_save[$i];
                             if ($model_line->save(false)) {
@@ -195,7 +195,7 @@ class QuotationController extends Controller
                     $vat_amount = (($total_all - $model->discount_amt) * 7) / 100;
                     $model->total_text = $this->numtothai(number_format(($total_all - $model->discount_amt) + $vat_amount,2));
                     $model->save(false);
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['update', 'id' => $model->id]);
                 }
             }
         } else {
@@ -252,7 +252,7 @@ class QuotationController extends Controller
                             $model_line->unit_id = $line_unit_id[$i];
                             $model_line->line_price = $line_price[$i];
                             $model_line->line_total = $line_total_new;
-                            $model_line->size_desc = $line_product_size[$i];
+                           // $model_line->size_desc = $line_product_size[$i];
                             $model_line->mat_desc = $line_product_mat[$i];
                             $model_line->product_name = $line_product_name[$i];
                             if ($model_line->save(false)) {
@@ -266,7 +266,7 @@ class QuotationController extends Controller
                             $model_line_update->line_price = $line_price[$i];
                             $model_line_update->line_total = $line_total_new;
                             $model_line_update->product_name = $line_product_name[$i];
-                            $model_line_update->size_desc = $line_product_size[$i];
+                           // $model_line_update->size_desc = $line_product_size[$i];
                             $model_line_update->mat_desc = $line_product_mat[$i];
                             if ($model_line_update->save(false)) {
                                 $total_all += $model_line_update->line_total;
@@ -290,7 +290,7 @@ class QuotationController extends Controller
                     }
 
                 }
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['update', 'id' => $model->id]);
             }
         }
 
@@ -304,7 +304,7 @@ class QuotationController extends Controller
     {
         $model = \common\models\Quotation::findOne($id);
         $model_line = \common\models\QuotationLine::find()->where(['quotation_id' => $id])->all();
-        return $this->render('_print', [
+        return $this->render('_print_new', [
             'model' => $model,
             'model_line' => $model_line
         ]);

@@ -29,7 +29,7 @@ class QuotationController extends Controller
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
-                        'delete' => ['POST','GET'],
+                        'delete' => ['POST', 'GET'],
                     ],
                 ],
             ]
@@ -163,9 +163,9 @@ class QuotationController extends Controller
 //                        array_push($line_photo, $uploaded_file);
 //
 //                    }
-          //      }
+                //      }
 
-             //   print_r($file_data);return;
+                //   print_r($file_data);return;
 
                 $model->quotation_no = $model::getLastNo();
                 $model->quotation_date = date('Y-m-d', strtotime($t_date));
@@ -174,7 +174,7 @@ class QuotationController extends Controller
                 if ($model->save(false)) {
                     $total_all = 0;
                     if ($line_product_id != null) {
-                        for ($i = 0; $i <= count($line_product_id)-1; $i++) {
+                        for ($i = 0; $i <= count($line_product_id) - 1; $i++) {
                             $line_total_new = str_replace(',', '', $line_total[$i]);
                             $model_line = new \common\models\QuotationLine();
                             $model_line->quotation_id = $model->id;
@@ -184,16 +184,16 @@ class QuotationController extends Controller
                             $model_line->line_price = $line_price[$i];
                             $model_line->line_total = $line_total_new;
                             $model_line->product_name = $line_product_name[$i];
-                          //  $model_line->size_desc = $line_product_size[$i];
+                            //  $model_line->size_desc = $line_product_size[$i];
                             $model_line->mat_desc = $line_product_mat[$i];
-                         //   $model_line->photo = $fine_data_name_to_save[$i];
+                            //   $model_line->photo = $fine_data_name_to_save[$i];
                             if ($model_line->save(false)) {
                                 $total_all += $model_line->line_total;
                             }
                         }
                     }
                     $vat_amount = (($total_all - $model->discount_amt) * 7) / 100;
-                    $model->total_text = $this->numtothai(number_format(($total_all - $model->discount_amt) + $vat_amount,2));
+                    $model->total_text = $this->numtothai(number_format(($total_all - $model->discount_amt) + $vat_amount, 2));
                     $model->save(false);
                     return $this->redirect(['update', 'id' => $model->id]);
                 }
@@ -219,78 +219,84 @@ class QuotationController extends Controller
         $model = $this->findModel($id);
         $model_detail = \common\models\QuotationLine::find()->where(['quotation_id' => $id])->all();
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            $xdate = explode('-', $model->quotation_date);
-            $t_date = date('Y-m-d');
-            if (count($xdate) > 1) {
-                $t_date = $xdate[2] . '-' . $xdate[1] . '-' . $xdate[0];
-            }
+        if ($this->request->isPost && $model->load($this->request->post())) {
 
-            $line_product_id = \Yii::$app->request->post('line_product_id');
-            $line_product_name = \Yii::$app->request->post('line_product_name');
-            $line_qty = \Yii::$app->request->post('line_qty');
-            $line_price = \Yii::$app->request->post('line_price');
-            $line_unit_id = \Yii::$app->request->post('line_unit_id');
-            $line_total = \Yii::$app->request->post('line_total');
-            $line_recid = \Yii::$app->request->post('line_recid');
-            $removelist = \Yii::$app->request->post('removelist');
+            if ($this->createQuotationtemp($id) > 0) {
 
-            $line_product_size = \Yii::$app->request->post('line_product_size');
-            $line_product_mat = \Yii::$app->request->post('line_product_mat');
+                $xdate = explode('-', $model->quotation_date);
+                $t_date = date('Y-m-d');
+                if (count($xdate) > 1) {
+                    $t_date = $xdate[2] . '-' . $xdate[1] . '-' . $xdate[0];
+                }
 
-            $model->quotation_date = date('Y-m-d', strtotime($t_date));
-            if ($model->save(false)) {
-                $total_all = 0;
-                if ($line_product_id != null) {
-                    for ($i = 0; $i <= count($line_product_id)-1; $i++) {
-                        $line_total_new = str_replace(',', '', $line_total[$i]);
-                        if ($line_recid[$i] == 0) {
-                            $model_line = new \common\models\QuotationLine();
-                            $model_line->quotation_id = $model->id;
-                            $model_line->product_id = $line_product_id[$i];
-                            $model_line->qty = $line_qty[$i];
-                            $model_line->unit_id = $line_unit_id[$i];
-                            $model_line->line_price = $line_price[$i];
-                            $model_line->line_total = $line_total_new;
-                           // $model_line->size_desc = $line_product_size[$i];
-                            $model_line->mat_desc = $line_product_mat[$i];
-                            $model_line->product_name = $line_product_name[$i];
-                            if ($model_line->save(false)) {
-                                $total_all += $model_line->line_total;
+                $line_product_id = \Yii::$app->request->post('line_product_id');
+                $line_product_name = \Yii::$app->request->post('line_product_name');
+                $line_qty = \Yii::$app->request->post('line_qty');
+                $line_price = \Yii::$app->request->post('line_price');
+                $line_unit_id = \Yii::$app->request->post('line_unit_id');
+                $line_total = \Yii::$app->request->post('line_total');
+                $line_recid = \Yii::$app->request->post('line_recid');
+                $removelist = \Yii::$app->request->post('removelist');
+
+                $line_product_size = \Yii::$app->request->post('line_product_size');
+                $line_product_mat = \Yii::$app->request->post('line_product_mat');
+
+
+                $model->quotation_date = date('Y-m-d', strtotime($t_date));
+                $model->revise_no = (int)$model->revise_no + 1;
+                if ($model->save(false)) {
+                    $total_all = 0;
+                    if ($line_product_id != null) {
+                        for ($i = 0; $i <= count($line_product_id) - 1; $i++) {
+                            $line_total_new = str_replace(',', '', $line_total[$i]);
+                            if ($line_recid[$i] == 0) {
+                                $model_line = new \common\models\QuotationLine();
+                                $model_line->quotation_id = $model->id;
+                                $model_line->product_id = $line_product_id[$i];
+                                $model_line->qty = $line_qty[$i];
+                                $model_line->unit_id = $line_unit_id[$i];
+                                $model_line->line_price = $line_price[$i];
+                                $model_line->line_total = $line_total_new;
+                                // $model_line->size_desc = $line_product_size[$i];
+                                $model_line->mat_desc = $line_product_mat[$i];
+                                $model_line->product_name = $line_product_name[$i];
+                                if ($model_line->save(false)) {
+                                    $total_all += $model_line->line_total;
+                                }
+                            } else {
+                                $model_line_update = \common\models\QuotationLine::find()->where(['id' => $line_recid[$i]])->one();
+                                $model_line_update->product_id = $line_product_id[$i];
+                                $model_line_update->qty = $line_qty[$i];
+                                $model_line_update->unit_id = $line_unit_id[$i];
+                                $model_line_update->line_price = $line_price[$i];
+                                $model_line_update->line_total = $line_total_new;
+                                $model_line_update->product_name = $line_product_name[$i];
+                                // $model_line_update->size_desc = $line_product_size[$i];
+                                $model_line_update->mat_desc = $line_product_mat[$i];
+                                if ($model_line_update->save(false)) {
+                                    $total_all += $model_line_update->line_total;
+                                }
                             }
-                        } else {
-                            $model_line_update = \common\models\QuotationLine::find()->where(['id' => $line_recid[$i]])->one();
-                            $model_line_update->product_id = $line_product_id[$i];
-                            $model_line_update->qty = $line_qty[$i];
-                            $model_line_update->unit_id = $line_unit_id[$i];
-                            $model_line_update->line_price = $line_price[$i];
-                            $model_line_update->line_total = $line_total_new;
-                            $model_line_update->product_name = $line_product_name[$i];
-                           // $model_line_update->size_desc = $line_product_size[$i];
-                            $model_line_update->mat_desc = $line_product_mat[$i];
-                            if ($model_line_update->save(false)) {
-                                $total_all += $model_line_update->line_total;
+
+                        }
+                    }
+                    $vat_amount = (($total_all - $model->discount_amt) * 7) / 100;
+                    // echo number_format(($total_all  - $model->discount_amt) + $vat_amount,2);return;
+                    $model->total_text = $this->numtothai(number_format(($total_all - $model->discount_amt) + $vat_amount, 2));
+                    $model->save(false);
+
+
+                    if ($removelist != null) {
+                        $x = explode(',', $removelist);
+                        if ($x != null) {
+                            for ($i = 0; $i < count($x); $i++) {
+                                \common\models\QuotationLine::deleteAll(['id' => $x[$i]]);
                             }
                         }
 
                     }
+                    return $this->redirect(['update', 'id' => $model->id]);
                 }
-                $vat_amount = (($total_all - $model->discount_amt) * 7) / 100;
-               // echo number_format(($total_all  - $model->discount_amt) + $vat_amount,2);return;
-                $model->total_text = $this->numtothai(number_format(($total_all  - $model->discount_amt) + $vat_amount,2));
-                $model->save(false);
-
-
-                if ($removelist != null) {
-                    $x = explode(',', $removelist);
-                    if ($x != null) {
-                        for ($i = 0; $i < count($x); $i++) {
-                            \common\models\QuotationLine::deleteAll(['id' => $x[$i]]);
-                        }
-                    }
-
-                }
-                return $this->redirect(['update', 'id' => $model->id]);
             }
         }
 
@@ -298,6 +304,58 @@ class QuotationController extends Controller
             'model' => $model,
             'model_line' => $model_detail
         ]);
+    }
+
+    public function createQuotationtemp($id)
+    {
+        $res = 0;
+        if ($id) {
+            $data = \backend\models\Quotation::find()->where(['id' => $id])->all();
+            if ($data) {
+                foreach ($data as $value) {
+                    $model = new \backend\models\Quotationtemp();
+                    $model->quotation_no = $value->quotation_no;
+                    $model->quotation_date = $value->quotation_date;
+                    $model->customer_name = $value->customer_name;
+                    $model->customer_id = $value->customer_id;
+                    $model->attn = $value->attn;
+                    $model->created_by = $value->created_by;
+                    $model->updated_by = $value->updated_by;
+                    $model->status = $value->status;
+                    $model->from = $value->from;
+                    $model->revise_no = $value->revise_no;
+                    $model->created_at = $value->created_at;
+                    $model->updated_at = $value->updated_at;
+                    $model->remark = $value->remark;
+                    $model->description = $value->description;
+                    $model->quotation_origin_id = $id;
+                    if ($model->save(false)) {
+                        $data_line = \common\models\QuotationLine::find()->where(['quotation_id' => $id])->all();
+                        if ($data_line) {
+                            foreach ($data_line as $value2) {
+                                $model_line = new \common\models\QuotationTempLine();
+                                $model_line->quotation_id = $model->id;
+                                $model_line->product_id = $value2->product_id;
+                                $model_line->qty = $value2->qty;
+                                $model_line->unit_id = $value2->unit_id;
+                                $model_line->line_price = $value2->line_price;
+                                $model_line->line_total = $value2->line_total;
+                                $model_line->status = $value2->status;
+                                $model_line->product_name = $value2->product_name;
+                                $model_line->size_desc = $value2->size_desc;
+                                $model_line->mat_desc = $value2->mat_desc;
+                                $model_line->photo = $value2->photo;
+                                if ($model_line->save(false)) {
+                                    $res++;
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $res;
     }
 
     public function actionPrint($id)
@@ -379,7 +437,7 @@ class QuotationController extends Controller
                             $model_trans->stock_type_id = 2;
                             $model_trans->warehouse_id = 1;
                             if ($model_trans->save(false)) {
-                                $this->createIssueForOrder($model_order_line->product_id,$line->qty,1,$model_order->id);
+                                $this->createIssueForOrder($model_order_line->product_id, $line->qty, 1, $model_order->id);
                                 $this->updateStock($model_order_line->product_id, $line->qty, 1); // update stock onhand
                             }
                             $total_all += $model_order_line->line_total;
@@ -479,11 +537,13 @@ class QuotationController extends Controller
         }
         return $return;
     }
-    public function numtothaibathstring($num){
+
+    public function numtothaibathstring($num)
+    {
         $return_str = '';
         $txtnum1 = array('', 'หนึ่ง', 'สอง', 'สาม', 'สี่', 'ห้า', 'หก', 'เจ็ด', 'แปด', 'เก้า');
         $txtnum2 = array('', 'สิบ', 'ร้อย', 'พัน', 'หมื่น', 'แสน', 'ล้าน');
-        if(strlen($num)>1){
+        if (strlen($num) > 1) {
             $num_arr = str_split($num);
             $count = count($num_arr);
             foreach ($num_arr as $key => $val) {
@@ -494,16 +554,17 @@ class QuotationController extends Controller
                 } else if ($count > 1 && $val == 2 && $key == ($count - 2)) {
                     $return_str .= "ยี่" . $txtnum2[$count - $key - 1];
                 } else if ($count > 1 && $val == 1 && $key == 0) {
-                    $return_str.=$txtnum2[$val];
+                    $return_str .= $txtnum2[$val];
                 } else {
                     $return_str .= $txtnum1[$val] . $txtnum2[$count - $key - 1];
                 }
             }
-        }else{
+        } else {
             $return_str = $txtnum1[intval($num)];
         }
         return $return_str;
     }
+
     public function numtothaistring($num)
     {
         $return_str = "";
@@ -521,7 +582,7 @@ class QuotationController extends Controller
             } else if ($count > 1 && $val == 2 && $key == ($count - 2)) {
                 $return_str .= "ยี่" . $txtnum2[$count - $key - 1];
             } else if ($count > 1 && $val == 0 && $key == 0) {
-                $return_str.=$txtnum2[$val];
+                $return_str .= $txtnum2[$val];
             } else {
                 $return_str .= $txtnum1[$val] . $txtnum2[$count - $key - 1];
             }

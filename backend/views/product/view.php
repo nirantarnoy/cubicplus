@@ -49,7 +49,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['attribute' => 'receive_date','value'=>function($data){
                return $data->receive_date == null ? '': date('d-m-Y',strtotime($data->receive_date));
             }],
-            'brand_id',
+            ['attribute' => 'warranty_start_date','value'=>function($data){
+                return $data->warranty_start_date == null ? '': date('d-m-Y',strtotime($data->warranty_start_date));
+            }],
+
+            ['attribute' => 'warranty_expired_date','value'=>function($data){
+                return $data->warranty_expired_date == null ? '': date('d-m-Y',strtotime($data->warranty_expired_date));
+            }],
+
             [
                 'attribute' => 'status',
                 'format' => 'raw',
@@ -62,8 +69,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
           //  'last_price',
-            'std_price',
+            'cost',
+            'sale_price',
             'commission',
+            'inventory_status',
             'remark',
           //  'company_id',
         ],

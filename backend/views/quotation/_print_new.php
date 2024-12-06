@@ -201,7 +201,7 @@
                     $total += ($value->qty * $value->line_price);
                     $line_desc = '';
                     if ($value->mat_desc != '') {
-                        $line_desc = '<br />' . $value->mat_desc;
+                        $line_desc = $value->mat_desc;
                     }
                     ?>
                     <tr>

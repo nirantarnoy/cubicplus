@@ -27,16 +27,27 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-           // 'id',
+            // 'id',
             'journal_no',
-            'trans_date',
-            'department_id',
+//            [
+//                'attribute' => 'trans_date',
+//                'format' => ['date', 'php:d-m-Y H:i:s'],
+//            ],
+            'doc_ref_no',
             'reason',
             'status',
-            'created_at',
-            'created_by',
-            'updated_at',
-            'updated_by',
+            [
+                'attribute' => 'created_at',
+                'format' => ['date', 'php:d-m-Y H:i:s'],
+            ],
+            [
+                'attribute' => 'created_by',
+                'value' => function ($data) {
+                    return \backend\models\User::findName($data->created_by);
+                },
+            ],
+//            'updated_at',
+//            'updated_by',
         ],
     ]) ?>
 

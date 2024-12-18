@@ -34,7 +34,7 @@ $warehouse_data = \backend\models\Warehouse::find()->where(['status' => 1])->all
 //                        'disabled' => true,
 //                    ]
 //                ]) ?>
-                <?= $form->field($model, 'issue_for_id')->textInput(['maxlength' => true, 'readonly' => 'readonly']) ?>
+                <?= $form->field($model, 'doc_ref_no')->textInput(['maxlength' => true]) ?>
             </div>
         </div>
         <div class="row">
@@ -129,8 +129,6 @@ $warehouse_data = \backend\models\Warehouse::find()->where(['status' => 1])->all
                                                 <option value="<?= $value_wh->id ?>" <?= $selected ?>><?= $value_wh->name ?></option>
                                             <?php endforeach; ?>
                                         </select>
-                                    </td>
-                                    <td>
                                     </td>
                                     <td>
                                         <input type="number" class="form-control line-product-onhand"

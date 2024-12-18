@@ -90,7 +90,7 @@ if (\Yii::$app->session->hasFlash('msg-error')) {
                 <?php $model->warranty_start_date = $model->isNewRecord ? date('d-m-Y') : date('d-m-Y', strtotime($model->warranty_start_date)); ?>
                 <?= $form->field($model, 'warranty_start_date')->widget(\kartik\date\DatePicker::className(), [
                     'options' => [
-                       // 'format' => 'dd-mm-yyyy',
+                        // 'format' => 'dd-mm-yyyy',
                     ],
                     'pluginOptions' => [
                         'autoclose' => true,
@@ -111,15 +111,26 @@ if (\Yii::$app->session->hasFlash('msg-error')) {
                     ]
                 ]) ?>
             </div>
+
+
+            <div class="col-lg-3">
+                <?= $form->field($model, 'distributor_id')->widget(\kartik\select2\Select2::className(), [
+                    'data' => ArrayHelper::map(\backend\models\Distributor::find()->all(), 'id', 'name'),
+                    'options' => [
+                        'placeholder' => '--เลือก--',
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ]
+                ]) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'inventory_status')->textInput(['readonly' => 'readonly']) ?>
+            </div>
+
             <div class="col-lg-3">
                 <?php echo $form->field($model, 'status')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
             </div>
-
-                <div class="col-lg-3">
-                    <?= $form->field($model, 'inventory_status')->textInput(['readonly'=>'readonly']) ?>
-                </div>
-
-
         </div>
         <br/>
         <div class="row">

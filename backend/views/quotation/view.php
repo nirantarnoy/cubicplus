@@ -43,7 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'attn',
-            //'from',
+            'from',
+            'due_date_amt',
             [
                 'attribute' => 'status',
                 'value' => function ($model) {
@@ -56,6 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'updated_by',
             'remark',
             'description',
+            ''
         ],
     ]) ?>
 

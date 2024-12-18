@@ -81,7 +81,6 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated_at',
             //'udpated_by',
             [
-
                 'header' => 'ตัวเลือก',
                 'headerOptions' => ['style' => 'text-align:center;', 'class' => 'activity-view-link',],
                 'class' => 'yii\grid\ActionColumn',

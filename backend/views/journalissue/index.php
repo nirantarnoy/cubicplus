@@ -1,22 +1,22 @@
 <?php
 
-use backend\models\Department;
+use backend\models\Journalissue;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\widgets\LinkPager;
+
 /** @var yii\web\View $this */
-/** @var backend\models\DepartmentSearch $searchModel */
+/** @var backend\models\JournalissueSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'ข้อมูลแผนก';
+$this->title = 'เบิกสินค้า';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="customer-index">
-
-
+<div class="journalissue-index">
+    <?php Pjax::begin(); ?>
     <div class="row">
         <div class="col-lg-10">
             <p>
@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </p>
         </div>
         <div class="col-lg-2" style="text-align: right">
-            <form id="form-perpage" class="form-inline" action="<?= Url::to(['department/index'], true) ?>"
+            <form id="form-perpage" class="form-inline" action="<?= Url::to(['journalissue/index'], true) ?>"
                   method="post">
                 <div class="form-group">
                     <label>แสดง </label>
@@ -38,13 +38,11 @@ $this->params['breadcrumbs'][] = $this->title;
             </form>
         </div>
     </div>
-
-    <?php Pjax::begin(); ?>
-    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    <?php echo $this->render('_search', ['model' => $searchModel, 'viewstatus' => $viewstatus]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        // 'filterModel' => $searchModel,
         'emptyCell' => '-',
         'layout' => "{items}\n{summary}\n<div class='text-center'>{pager}</div>",
         'summary' => "แสดง {begin} - {end} ของทั้งหมด {totalCount} รายการ",
@@ -55,26 +53,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'id' => 'product-grid',
         //'tableOptions' => ['class' => 'table table-hover'],
         'emptyText' => '<div style="color: red;text-align: center;"> <b>ไม่พบรายการไดๆ</b> <span> เพิ่มรายการโดยการคลิกที่ปุ่ม </span><span class="text-success">"สร้างใหม่"</span></div>',
-//        'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            'code',
-            'name',
             [
-                'attribute' => 'status',
-                'format' => 'raw',
+                'class' => 'yii\grid\SerialColumn',
+                'headerOptions' => ['style' => 'text-align:center;'],
+                'contentOptions' => ['style' => 'text-align: center'],
+            ],
+
+            'journal_no',
+            [
+                'attribute' => 'trans_date',
                 'value' => function ($data) {
-                    if ($data->status == 1) {
-                        return '<div class="badge badge-success" >ใช้งาน</div>';
-                    } else {
-                        return '<div class="badge badge-secondary" >ไม่ใช้งาน</div>';
-                    }
+                    return date('d-m-Y', strtotime($data->trans_date));
                 }
             ],
-            //'crated_at',
-            //'created_by',
-            //'updated_at',
-            //'udpated_by',
+            'reason',
             [
 
                 'header' => 'ตัวเลือก',
@@ -127,8 +120,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'pager' => ['class' => LinkPager::className()],
     ]); ?>
-
-
 
     <?php Pjax::end(); ?>
 

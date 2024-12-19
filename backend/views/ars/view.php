@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var backend\models\Ars $model */
 
-$this->title = $model->id;
+$this->title = $model->ars_no;
 $this->params['breadcrumbs'][] = ['label' => 'Ars', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -27,12 +27,32 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'ars_no',
-            'issue_date',
-            'customer_id',
+            [
+                'attribute' => 'issue_date',
+                'value' => function ($model) {
+                    return $model->issue_date !=null ? date('d/m/Y', $model->issue_date):'';
+                }
+            ],
+            [
+                'attribute' => 'customer_id',
+                'value' => function ($model) {
+                    return backend\models\Customer::findCusFullName($model->customer_id);
+                }
+            ],
             'status',
-            'created_at',
+            [
+                'attribute' => 'created_at',
+                'value' => function ($model) {
+                    return $model->created_at !=null ? date('d/m/Y H:i:s', $model->created_at): '';
+                }
+            ],
             'created_by',
-            'updated_at',
+            [
+                'attribute' => 'updated_at',
+                'value' => function ($model) {
+                    return $model->updated_at!=null ? date('d/m/Y H:i:s', $model->updated_at):'';
+                }
+            ],
             'updated_by',
         ],
     ]) ?>

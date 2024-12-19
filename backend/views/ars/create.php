@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var backend\models\Ars $model */
 
-$this->title = 'Create ARS';
+$this->title = 'สร้าง ARS';
 $this->params['breadcrumbs'][] = ['label' => 'Ars', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

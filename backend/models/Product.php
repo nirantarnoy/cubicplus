@@ -88,10 +88,10 @@ class Product extends \common\models\Product
         return $model != null ?$model->unit_id:0;
     }
 
-//    public static function getTotalQty($id){
-//        $model = \backend\models\Stocksum::find()->where(['product_id'=>$id])->sum('qty');
-//        return $model;
-//    }
+    public static function findOnhand($id){
+        $model = \backend\models\Stocksum::find()->where(['product_id'=>$id])->sum('qty');
+        return $model!=null ?$model:0;
+    }
 
 //    public static function findName($id){
 //        $model = \common\models\RoutePlan::find()->where(['id'=>$id])->one();

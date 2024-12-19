@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var backend\models\Ars $model */
 
-$this->title = 'Update Ars: ' . $model->id;
+$this->title = 'แก้ไข Ars: ' . $model->ars_no;
 $this->params['breadcrumbs'][] = ['label' => 'Ars', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = ['label' => $model->ars_no, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'แก้ไข';
 ?>
 <div class="ars-update">
     <?= $this->render('_form', [

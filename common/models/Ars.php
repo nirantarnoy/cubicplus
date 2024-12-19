@@ -46,9 +46,9 @@ class Ars extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'ars_no' => 'Ars No',
+            'ars_no' => 'ARS No',
             'issue_date' => 'Issue Date',
-            'customer_id' => 'Customer ID',
+            'customer_id' => 'Customer',
             'status' => 'Status',
             'created_at' => 'Created At',
             'created_by' => 'Created By',

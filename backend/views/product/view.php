@@ -55,6 +55,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['attribute' => 'distributor_id', 'value' => function ($data) {
                         return \backend\models\Distributor::findName($data->distributor_id);
                     }],
+                    'cost',
+                    'sale_price',
+                    'commission',
 
                 ],
             ]) ?>
@@ -83,10 +86,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                     ],
                     //  'last_price',
-                    'cost',
-                    'sale_price',
-                    'commission',
+
                     'inventory_status',
+                    [
+                        'attribute' => 'onhand_qty',
+                        'label' => 'จำนวนสินค้าคงเหลือ',
+                        'value' => function ($data) {
+                           $qty = \backend\models\Product::findOnhand($data->id);
+                           return number_format($qty);
+                        }
+                    ],
                     'remark',
                     //  'company_id',
                 ],

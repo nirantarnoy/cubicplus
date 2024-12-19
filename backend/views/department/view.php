@@ -31,7 +31,41 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'code',
             'name',
-            'status',
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    if ($model->status == 1) {
+                        return '<div class="badge badge-success">ใช้งาน</div>';
+                    } else {
+                        return '<div class="badge badge-default">ไม่ใช้งาน</div>';
+                    }
+                }
+            ],
+            [
+                'attribute' => 'created_at',
+                'value' => function ($model) {
+                    return $model->created_at != null ? date('d/m/Y H:i:s', $model->created_at) : '';
+                }
+            ],
+            [
+                'attribute' => 'created_by',
+                'value' => function ($model) {
+                    return backend\models\User::findName($model->created_by);
+                }
+            ],
+            [
+                'attribute' => 'updated_at',
+                'value' => function ($model) {
+                    return $model->updated_at != null ? date('d/m/Y H:i:s', $model->updated_at) : '';
+                }
+            ],
+            [
+                'attribute' => 'updated_by',
+                'value' => function ($model) {
+                    return backend\models\User::findName($model->updated_by);
+                }
+            ],
         ],
     ]) ?>
 

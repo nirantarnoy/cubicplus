@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'issue_date',
                 'value' => function ($model) {
-                    return $model->issue_date !=null ? date('d/m/Y', $model->issue_date):'';
+                    return $model->issue_date !=null ? date('d/m/Y', strtotime($model->issue_date)):'';
                 }
             ],
             [
@@ -46,14 +46,24 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->created_at !=null ? date('d/m/Y H:i:s', $model->created_at): '';
                 }
             ],
-            'created_by',
+            [
+                'attribute' => 'created_by',
+                'value' => function ($model) {
+                    return backend\models\User::findName($model->created_by);
+                }
+            ],
             [
                 'attribute' => 'updated_at',
                 'value' => function ($model) {
                     return $model->updated_at!=null ? date('d/m/Y H:i:s', $model->updated_at):'';
                 }
             ],
-            'updated_by',
+            [
+                'attribute' => 'updated_by',
+                'value' => function ($model) {
+                    return backend\models\User::findName($model->updated_by);
+                }
+            ],
         ],
     ]) ?>
 

@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\models\Ars;
 use backend\models\ArsSearch;
+use backend\models\Systemlog;
 use backend\models\UnitSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -30,6 +31,42 @@ class ArsController extends Controller
                 ],
             ]
         );
+    }
+
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        $action_id = $action->id;
+        $controller_name = $this->id;
+        $mothod_name = \Yii::$app->request->method;
+        $params =  json_encode(\Yii::$app->request->bodyParams ?: \Yii::$app->request->queryParams);
+        $ip_address = \Yii::$app->request->userIP;
+
+        $log = new Systemlog();
+        $log->trans_date = date('Y-m-d H:i:s');
+        $log->function_name = $controller_name.'/'.$action_id.'/'.$mothod_name.'/'.$params;
+        $log->user_id = \Yii::$app->user->id;
+        $log->ipaddress = $ip_address;
+        $log->log_type_id = 2;
+        $log->save(false);
+
+
+
+        // Log the user action
+//        $log = new Systemlog();
+//        $log->user_id = \Yii::$app->user->isGuest ? null : \Yii::$app->user->id;
+//        $log->action = $action->id;
+//        $log->controller = $this->id;
+//        $log->method = Yii::$app->request->method;
+//        $log->params = json_encode(Yii::$app->request->bodyParams ?: Yii::$app->request->queryParams);
+//        $log->ip_address = Yii::$app->request->userIP;
+//        $log->created_at = date('Y-m-d H:i:s');
+//        $log->save(false); // Save without validation to avoid exceptions
+
+        return true;
     }
 
     /**

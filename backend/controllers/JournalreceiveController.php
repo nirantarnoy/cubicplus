@@ -152,6 +152,8 @@ class JournalreceiveController extends Controller
                                         $model_new->qty = (float)$line_qty[$i];
                                         $model_new->save(false);
                                     }
+
+                                    \backend\models\Product::updateAll(['receive_date' => date('Y-m-d H:i:s')], ['id' => $line_item_id[$i]]);
                                 }
                             }
                         }

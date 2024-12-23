@@ -65,7 +65,7 @@ if (\Yii::$app->session->hasFlash('msg-error')) {
             </div>
 
             <div class="col-lg-3">
-                <?php $model->receive_date = $model->receive_date!=null ? date('d-m-Y', strtotime($model->receive_date)) : ''; ?>
+                <?php $model->receive_date = $model->receive_date!=null ? date('d-m-Y', strtotime($model->receive_date)) : date('d-m-Y'); ?>
                 <?= $form->field($model, 'receive_date')->widget(\kartik\date\DatePicker::className(), [
                     'options' => [
                         'readonly' => false,

@@ -12,6 +12,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="ars-create">
     <?= $this->render('_form', [
         'model' => $model,
+        'model_product' => $model_product,
+        'model_line' => null,
     ]) ?>
 
 </div>

@@ -13,6 +13,8 @@ $this->params['breadcrumbs'][] = 'แก้ไข';
 <div class="ars-update">
     <?= $this->render('_form', [
         'model' => $model,
+        'model_product' => $model_product,
+        'model_line' => $model_line,
     ]) ?>
 
 </div>

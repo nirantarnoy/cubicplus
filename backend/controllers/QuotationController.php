@@ -114,8 +114,10 @@ class QuotationController extends Controller
      */
     public function actionView($id)
     {
+        $model_line = \common\models\QuotationLine::find()->where(['quotation_id' => $id])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'model_line' => $model_line,
         ]);
     }
 

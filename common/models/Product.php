@@ -75,10 +75,10 @@ class Product extends \yii\db\ActiveRecord
             'receive_date'=> 'วันที่รับสินค้า',
             'brand_id'=>'ยี่ห้อ',
             'branch_name'=>'ชื่อยี่ห้อ',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
+            'created_at' => 'สร้างเมื่อ',
+            'created_by' => 'สร้างโดย',
+            'updated_at' => 'แก้ไขเมื่อ',
+            'updated_by' => 'แก้ไขโดย',
         ];
     }
 }

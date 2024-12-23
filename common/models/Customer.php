@@ -61,10 +61,10 @@ class Customer extends \yii\db\ActiveRecord
             'branch_name' => 'ชื่อสาขา',
             'latlong' => 'แผนที่',
             'payment_term_id'=> 'เครดิต',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
+            'created_at' => 'สร้างเมื่อ',
+            'created_by' => 'สร้างโดย',
+            'updated_at' => 'แก้ไขเมื่อ',
+            'updated_by' => 'แก้ไขโดย',
         ];
     }
 }

@@ -42,7 +42,7 @@ class ArsSearch extends Ars
      */
     public function search($params)
     {
-        $query = Ars::find();
+        $query = Ars::find()->joinWith('productars');
 
         // add conditions that should always apply here
 

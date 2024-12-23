@@ -48,10 +48,10 @@ class PaymentMethod extends \yii\db\ActiveRecord
             'name' => 'ชื่อรายการ',
             'description' => 'รายละเอียด',
             'status' => 'สถานะ',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
+            'created_at' => 'สร้างเมื่อ',
+            'created_by' => 'สร้างโดย',
+            'updated_at' => 'แก้ไขเมื่อ',
+            'updated_by' => 'แก้ไขโดย',
         ];
     }
 }

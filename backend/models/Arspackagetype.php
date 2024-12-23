@@ -5,7 +5,7 @@ use Yii;
 use yii\db\ActiveRecord;
 date_default_timezone_set('Asia/Bangkok');
 
-class Ars extends \common\models\Ars
+class Arspackagetype extends \common\models\ArsPackageType
 {
     public function behaviors()
     {
@@ -49,13 +49,13 @@ class Ars extends \common\models\Ars
     }
 
     public static function findName($id){
-        $model = Position::find()->where(['id'=>$id])->one();
+        $model = Arspackagetype::find()->where(['id'=>$id])->one();
         return $model!= null?$model->name:'';
     }
 
-    public function getProductars(){
-        return $this->hasOne(ArsLine::className(), ['ars_id' => 'id']);
-    }
+//    public function getProductars(){
+//        return $this->hasOne(ArsLine::className(), ['ars_id' => 'id']);
+//    }
 
 
 }

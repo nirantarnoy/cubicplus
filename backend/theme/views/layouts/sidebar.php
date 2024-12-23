@@ -281,12 +281,20 @@
                         <ul class="nav nav-treeview">
 
                             <?php //if (\Yii::$app->user->can('order/index')): ?>
-                                <li class="nav-item">
-                                    <a href="index.php?r=ars/index" class="nav-link ars">
-                                        <i class="far fa-circlez nav-icon"></i>
-                                        <p>ARS</p>
-                                    </a>
-                                </li>
+                            <li class="nav-item">
+                                <a href="index.php?r=ars/index" class="nav-link ars">
+                                    <i class="far fa-circlez nav-icon"></i>
+                                    <p>ARS</p>
+                                </a>
+                            </li>
+                            <?php //endif; ?>
+                            <?php //if (\Yii::$app->user->can('order/index')): ?>
+                            <li class="nav-item">
+                                <a href="index.php?r=arsclame/index" class="nav-link arsclame">
+                                    <i class="far fa-circlez nav-icon"></i>
+                                    <p>ใบเคลม</p>
+                                </a>
+                            </li>
                             <?php //endif; ?>
                             <?php //if (\Yii::$app->user->can('position/index')): ?>
                             <!--                        <li class="nav-item">-->

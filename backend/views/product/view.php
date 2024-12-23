@@ -92,11 +92,35 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'onhand_qty',
                         'label' => 'จำนวนสินค้าคงเหลือ',
                         'value' => function ($data) {
-                           $qty = \backend\models\Product::findOnhand($data->id);
-                           return number_format($qty);
+                            $qty = \backend\models\Product::findOnhand($data->id);
+                            return number_format($qty);
                         }
                     ],
                     'remark',
+                    [
+                        'attribute' => 'created_at',
+                        'value' => function ($data) {
+                            return date('d-m-Y H:i:s', strtotime($data->created_at));
+                        }
+                    ],
+                    [
+                        'attribute' => 'created_by',
+                        'value' => function ($data) {
+                            return \backend\models\User::findName($data->created_by);
+                        }
+                    ],
+                    [
+                        'attribute' => 'updated_at',
+                        'value' => function ($data) {
+                            return date('d-m-Y H:i:s', strtotime($data->created_at));
+                        }
+                    ],
+                    [
+                        'attribute' => 'updated_by',
+                        'value' => function ($data) {
+                            return \backend\models\User::findName($data->updated_by);
+                        }
+                    ],
                     //  'company_id',
                 ],
             ]) ?>

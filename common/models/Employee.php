@@ -65,10 +65,10 @@ class Employee extends \yii\db\ActiveRecord
             'photo' => 'รูปภาพ',
             'status' => 'สถานะ',
             'company_id' => 'Company ID',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'created_by' => 'Created By',
-            'updated_by' => 'Updated By',
+            'created_at' => 'สร้างเมื่อ',
+            'created_by' => 'สร้างโดย',
+            'updated_at' => 'แก้ไขเมื่อ',
+            'updated_by' => 'แก้ไขโดย',
         ];
     }
 }

@@ -15,6 +15,7 @@ use yii\filters\VerbFilter;
  */
 class ArsController extends Controller
 {
+    public $enableCsrfValidation = false;
     /**
      * @inheritDoc
      */
@@ -97,8 +98,12 @@ class ArsController extends Controller
      */
     public function actionView($id)
     {
+        $model_product = \common\models\ArsLine::find()->where(['ars_id'=>$id])->one();
+        $model_log = \common\models\ArsLog::find()->where(['ars_id'=>$id])->orderBy(['trans_date'=>SORT_DESC])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'model_product' => $model_product,
+            'model_log' => $model_log,
         ]);
     }
 
@@ -110,9 +115,15 @@ class ArsController extends Controller
     public function actionCreate()
     {
         $model = new Ars();
+        $model_product = new \common\models\ArsLine();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            if ($model->load($this->request->post()) && $model_product->load($this->request->post())) {
+                $model->status = 0; // waiting
+                if($model->save(false)){
+                    $model_product->ars_id = $model->id;
+                    $model_product->save(false);
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -121,6 +132,7 @@ class ArsController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'model_product' => $model_product,
         ]);
     }
 
@@ -134,13 +146,51 @@ class ArsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model_product = new \common\models\ArsLine();
+        $model_line = \common\models\ArsLine::find()->where(['ars_id' => $id])->all();
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($this->request->isPost && $model->load($this->request->post()) && $model_product->load($this->request->post())) {
+            $exp = explode('-',$model_product->period_start_date);
+            $exp2 = explode('-',$model_product->period_end_date);
+            $exp3 = explode('-',$model->issue_date);
+            $w_start_date = date('Y-m-d');
+            $w_exp_date = date('Y-m-d');
+            $issue_date = date('Y-m-d');
+            if($exp!=null){
+                if(count($exp)>1){
+                    $w_exp_date = $exp[2].'-'.$exp[1].'-'.$exp[0];
+                }
+            }
+            if($exp2!=null){
+                if(count($exp2)>1){
+                    $w_start_date = $exp2[2].'-'.$exp2[1].'-'.$exp2[0];
+                }
+            }
+            if($exp3!=null){
+                if(count($exp3)>1){
+                    $issue_date = $exp3[2].'-'.$exp3[1].'-'.$exp3[0];
+                }
+            }
+
+            if($model->save(false)){
+                $model_product->period_start_date = date('Y-m-d',strtotime($w_start_date));
+                $model_product->period_end_date = date('Y-m-d',strtotime($w_exp_date));
+                $model_product->save(false);
+
+                $model_log = new \common\models\ArsLog();
+                $model_log->ars_id = $model->id;
+                $model_log->detail = $model->log_text;
+                $model_log->trans_date = date('Y-m-d H:i:s');
+                $model_log->issue_by  = \Yii::$app->user->id;
+                $model_log->save(false);
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'model_product' => $model_product,
+            'model_line' => $model_line,
         ]);
     }
 
@@ -172,5 +222,32 @@ class ArsController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionPrint(){
+        return $this->render('_print');
+    }
+
+    public function actionApprove($id){
+      //  $id = \Yii::$app->request->post('id');
+        if($id){
+            $model = \backend\models\Ars::find()->where(['id'=>$id])->one();
+            if($model){
+                $model->status = 1;
+                if($model->save(false)){
+                    return $this->redirect(['view', 'id' => $id]);
+                }
+            }else{
+                return $this->redirect(['view', 'id' => $id]);
+            }
+        }else{
+            return $this->redirect(['view', 'id' => $id]);
+        }
+    }
+    public function getLastNo(){
+        $runno = '';
+
+
+        return $runno;
     }
 }

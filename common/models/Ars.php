@@ -19,6 +19,8 @@ use Yii;
  */
 class Ars extends \yii\db\ActiveRecord
 {
+    public $log_text;
+
     /**
      * {@inheritdoc}
      */
@@ -33,9 +35,10 @@ class Ars extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['log_text'], 'required'],
             [['issue_date'], 'safe'],
             [['customer_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-            [['ars_no'], 'string', 'max' => 255],
+            [['ars_no','log_text','other_product'], 'string', 'max' => 255],
         ];
     }
 
@@ -50,10 +53,11 @@ class Ars extends \yii\db\ActiveRecord
             'issue_date' => 'Issue Date',
             'customer_id' => 'Customer',
             'status' => 'Status',
-            'created_at' => 'Created At',
-            'created_by' => 'Created By',
-            'updated_at' => 'Updated At',
-            'updated_by' => 'Updated By',
+            'other_product' => 'สินค้าอื่นๆ',
+            'created_at' => 'สร้างเมื่อ',
+            'created_by' => 'สร้างโดย',
+            'updated_at' => 'แก้ไขเมื่อ',
+            'updated_by' => 'แก้ไขโดย',
         ];
     }
 }

@@ -33,9 +33,9 @@ class ArsLine extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ars_id', 'product_id', 'qty', 'warranty_year'], 'integer'],
+            [['ars_id', 'product_id', 'qty', 'warranty_year','install_area_id','install_province_id'], 'integer'],
             [['period_start_date', 'period_end_date'], 'safe'],
-            [['install_location', 'package_type'], 'string', 'max' => 255],
+            [['install_location', 'package_type','install_address','install_zipcode'], 'string', 'max' => 255],
         ];
     }
 
@@ -53,7 +53,11 @@ class ArsLine extends \yii\db\ActiveRecord
             'period_start_date' => 'Period Start Date',
             'period_end_date' => 'Period End Date',
             'package_type' => 'Package Type',
-            'warranty_year' => 'Warranty Year',
+            'warranty_year' => 'ระยะเวลาในการรับประกัน',
+            'install_area_id' => 'พื้นที่ติดตั้งอุปกรณ์',
+            'install_address' => 'ที่อยู่หรือสถานที่ที่ติดตั้งสินค้า',
+            'install_province_id' => 'จังหวัด',
+            'install_zipcode' => 'รหัสไปรษณีย์',
         ];
     }
 }

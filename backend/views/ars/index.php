@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($data->status == 1) {
                         return '<div class="badge badge-success"><i class="fa fa-check"></i> Approve</div>';
                     } else {
-                        return '<div class="badge badge-secondary"><i class="fa fa-clock"></i> Waiting</div>';
+                        return '<div class="badge badge-warning"><i class="fa fa-clock"></i> Waiting</div>';
                     }
                 }
             ],
@@ -77,6 +77,44 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'customer_id',
                 'value' => function ($data) {
                     return \backend\models\Customer::findCusFullName($data->customer_id);
+                }
+            ],
+            [
+                'attribute' => 'productars.product_id',
+                'value' => function ($data) {
+                    //  return \backend\models\Product::findSku($data->productars->product_id);
+                    return $data->productars ? \backend\models\Product::findSku($data->productars->product_id):'';
+                }
+            ],
+            [
+                'attribute' => 'productars.warranty_year',
+                'value' => function ($data) {
+                    //  return \backend\models\Product::findSku($data->productars->product_id);
+                    return $data->productars ? \backend\models\Arspackagetype::findName($data->productars->warranty_year):'';
+                }
+            ],
+            [
+                'attribute' => 'productars.period_start_date',
+                'value' => function ($data) {
+                    return $data->productars ? date('d/m/Y', strtotime($data->productars->period_start_date)):'';
+                }
+            ],
+            [
+                'attribute' => 'productars.period_end_date',
+                'value' => function ($data) {
+                    return $data->productars ? date('d/m/Y', strtotime($data->productars->period_end_date)):'';
+                }
+            ],
+            [
+                'attribute' => 'productars.install_area_id',
+                'value' => function ($data) {
+                    return $data->productars ? \backend\models\Installarea::findName($data->productars->install_area_id):'';
+                }
+            ],
+            [
+                'attribute' => 'productars.install_province_id',
+                'value' => function ($data) {
+                    return $data->productars ? \backend\models\Province::findProvinceName($data->productars->install_province_id):'';
                 }
             ],
             [

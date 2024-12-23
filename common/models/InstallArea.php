@@ -5,26 +5,24 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "unit".
+ * This is the model class for table "install_area".
  *
  * @property int $id
- * @property string|null $code
  * @property string|null $name
- * @property string|null $description
  * @property int|null $status
  * @property int|null $created_at
  * @property int|null $created_by
  * @property int|null $updated_at
  * @property int|null $updated_by
  */
-class Unit extends \yii\db\ActiveRecord
+class InstallArea extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'unit';
+        return 'install_area';
     }
 
     /**
@@ -33,9 +31,8 @@ class Unit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'],'required'],
             [['status', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-            [['name', 'description'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 255],
         ];
     }
 
@@ -46,13 +43,12 @@ class Unit extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'ชื่อ',
-            'description' => 'รายละเอียด',
-            'status' => 'สถานะ',
-            'created_at' => 'สร้างเมื่อ',
-            'created_by' => 'สร้างโดย',
-            'updated_at' => 'แก้ไขเมื่อ',
-            'updated_by' => 'แก้ไขโดย',
+            'name' => 'Name',
+            'status' => 'Status',
+            'created_at' => 'Created At',
+            'created_by' => 'Created By',
+            'updated_at' => 'Updated At',
+            'updated_by' => 'Updated By',
         ];
     }
 }

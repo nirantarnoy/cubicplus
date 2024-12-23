@@ -51,10 +51,10 @@ class JournalIssue extends \yii\db\ActiveRecord
             'issue_for_id' => 'เลขที่คำสั่งซื้อ',
             'doc_ref_no' => 'อ้างอิง',
             'remark' => 'หมายเหตุ',
-            'created_at' => 'วันที่ทำรายการ',
-            'created_by' => 'ผู้ทำรายการ',
-            'updated_at' => 'วันที่แก้ไข',
-            'updated_by' => 'ผู้ทำการแก้ไข',
+            'created_at' => 'สร้างเมื่อ',
+            'created_by' => 'สร้างโดย',
+            'updated_at' => 'แก้ไขเมื่อ',
+            'updated_by' => 'แก้ไขโดย',
             'status'=>'สถานะ',
         ];
     }

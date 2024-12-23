@@ -524,5 +524,35 @@ class CustomerController extends Controller
         echo $html;
     }
 
+    public function actionGetcusfulladdress(){
+        $data = [];
+        $address = '';
+        $province_id = 0;
+        $province_name = '';
+        $postcode = '';
+        $contact_name = '';
+        $mobile_phone = '';
+        $email = '';
+        $data_province = [];
+        $id = \Yii::$app->request->post('id');
+        if($id){
+            $address = \backend\models\Customer::findFullAddress($id);
+            $mobile_phone = \backend\models\Customer::findPhone($id);
+            $email = \backend\models\Customer::findEmail($id);
+            $contact_name = \backend\models\Customer::findContactName($id);
+            $data_province = \backend\models\Customer::findCustomerProvince($id);
+
+            if($data_province != null){
+                $province_id = $data_province[0]['province_id'];
+                $province_name = $data_province[0]['province_name'];
+                $postcode = $data_province[0]['zipcode'];
+            }
+
+            array_push($data,['address'=>$address,'province_name'=>$province_name,'postcode'=>$postcode,'contact_name'=>$contact_name,'mobile_phone'=>$mobile_phone,'email'=>$email]);
+        }
+
+        echo json_encode($data);
+    }
+
 
 }

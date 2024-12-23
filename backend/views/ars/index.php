@@ -4,7 +4,9 @@ use backend\models\Ars;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
-use yii\grid\GridView;
+
+//use yii\grid\GridView;
+use kartik\grid\GridView;
 use yii\widgets\Pjax;
 use yii\bootstrap4\LinkPager;
 
@@ -46,6 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'layout' => "{items}\n{summary}\n<div class='text-center'>{pager}</div>",
         'summary' => "แสดง {begin} - {end} ของทั้งหมด {totalCount} รายการ",
         'showOnEmpty' => false,
+        'responsive' => true,
         //    'bordered' => true,
         //     'striped' => false,
         //    'hover' => true,
@@ -72,7 +75,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'ars_no',
-            'issue_date',
+            [
+                'attribute' => 'issue_date',
+                'value' => function ($data) {
+                    return $data->issue_date !=null ? date('d/m/Y',strtotime($data->issue_date)) : '';
+                }
+            ],
             [
                 'attribute' => 'customer_id',
                 'value' => function ($data) {
@@ -83,38 +91,56 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'productars.product_id',
                 'value' => function ($data) {
                     //  return \backend\models\Product::findSku($data->productars->product_id);
-                    return $data->productars ? \backend\models\Product::findSku($data->productars->product_id):'';
+                    return $data->productars ? \backend\models\Product::findSku($data->productars->product_id) : '';
                 }
             ],
+            'productars.serial_no',
             [
                 'attribute' => 'productars.warranty_year',
                 'value' => function ($data) {
                     //  return \backend\models\Product::findSku($data->productars->product_id);
-                    return $data->productars ? \backend\models\Arspackagetype::findName($data->productars->warranty_year):'';
+                    return $data->productars ? \backend\models\Arspackagetype::findName($data->productars->warranty_year) : '';
                 }
             ],
             [
                 'attribute' => 'productars.period_start_date',
                 'value' => function ($data) {
-                    return $data->productars ? date('d/m/Y', strtotime($data->productars->period_start_date)):'';
+                    return $data->productars ? date('d/m/Y', strtotime($data->productars->period_start_date)) : '';
                 }
             ],
             [
                 'attribute' => 'productars.period_end_date',
                 'value' => function ($data) {
-                    return $data->productars ? date('d/m/Y', strtotime($data->productars->period_end_date)):'';
+                    return $data->productars ? date('d/m/Y', strtotime($data->productars->period_end_date)) : '';
+                }
+            ],
+            [
+                'label' => 'Expire Days',
+                'contentOptions' => ['style' => 'text-align: center'],
+                'value' => function ($data) {
+                    $left_date = null;
+                    if($data->productars){
+                        if($data->productars->period_start_date != null && $data->productars->period_end_date != null){
+                            $date1 = date_create(date('Y-m-d',strtotime($data->productars->period_start_date)));
+                            $date2 = date_create(date('Y-m-d', strtotime($data->productars->period_end_date)));
+                            $left_date = $date1->diff($date2)->days;
+                        }
+                    }
+
+
+                    return $left_date;
                 }
             ],
             [
                 'attribute' => 'productars.install_area_id',
                 'value' => function ($data) {
-                    return $data->productars ? \backend\models\Installarea::findName($data->productars->install_area_id):'';
+                    return $data->productars ? \backend\models\Installarea::findName($data->productars->install_area_id) : '';
                 }
             ],
             [
                 'attribute' => 'productars.install_province_id',
                 'value' => function ($data) {
-                    return $data->productars ? \backend\models\Province::findProvinceName($data->productars->install_province_id):'';
+                    return $data->productars ? \backend\models\Province::findProvinceName($data->productars->install_province_id) : '';
                 }
             ],
             [

@@ -1,6 +1,7 @@
 <?php
 
 use backend\models\Systemlog;
+use yii\bootstrap4\LinkPager;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -52,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //                 }
 //            ],
         ],
+        'pager' => ['class' => LinkPager::className()],
     ]); ?>
 
     <?php Pjax::end(); ?>

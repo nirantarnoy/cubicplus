@@ -18,6 +18,7 @@ if($model_line!=null){
         $model_product->install_address = $value->install_address;
         $model_product->install_province_id = $value->install_province_id;
         $model_product->install_zipcode = $value->install_zipcode;
+        $model_product->serial_no = $value->serial_no;
 
     }
 }
@@ -42,13 +43,13 @@ if($model_line!=null){
                     'data' => \yii\helpers\ArrayHelper::map(\common\models\Customer::find()->all(), 'id', function ($data) {
                         return $data->name;
                     }),
-                    'options' => ['placeholder' => 'Select Customer'],
+                    'options' => ['placeholder' => 'Select Customer','onchange'=>'showcusaddress($(this))'],
                     'pluginOptions' => ['allowClear' => true],
                 ]) ?>
             </div>
             <div class="col-lg-3">
                 <label for="">ที่อยู่ลูกค้า</label>
-                <textarea name="customer_address" class="form-control" id="" cols="30" rows="2"></textarea>
+                <?= $form->field($model, 'customer_address')->textarea(['class'=>'form-control customer-address'])->label(false) ?>
             </div>
             <div class="col-lg-3">
                 <?= $form->field($model, 'issue_date')->textInput() ?>
@@ -66,14 +67,14 @@ if($model_line!=null){
                 <?php //echo $model_product = $model_line != null ? $model_line[0]['product_id']:'';?>
                 <?= $form->field($model_product, 'product_id')->widget(\kartik\select2\Select2::className(), [
                     'data' => \yii\helpers\ArrayHelper::map(\common\models\Product::find()->all(), 'id', 'sku'),
-                    'options' => ['placeholder' => 'Select Product'],
+                    'options' => ['placeholder' => 'Select Product','onchange'=>'getserialno($(this))'],
                     'pluginOptions' => ['allowClear' => true],
 
                 ])->label('รุ่น / Model no.') ?>
             </div>
             <div class="col-lg-3">
                 <label for="">หมายเลข Serial no.</label>
-                <input type="text" class="form-control" name="product_serial_no" value="" readonly>
+                <?= $form->field($model_product, 'serial_no')->textInput(['class'=>'form-control serial-no','readonly'=>'readonly'])->label(false) ?>
             </div>
             <div class="col-lg-3">
                 <?= $form->field($model_product, 'warranty_year')->widget(\kartik\select2\Select2::className(), [
@@ -110,7 +111,7 @@ if($model_line!=null){
         </div>
         <div class="row">
             <div class="col-lg-3">
-                <?php //echo $model_product->period_start_date = $model->isNewRecord ? date('d-m-Y') : date('d-m-Y', strtotime($model_product->period_start_date)); ?>
+                <?php $model_product->period_start_date = $model_product->period_start_date == null ? '': date('d-m-Y', strtotime($model_product->period_start_date)); ?>
                 <?= $form->field($model_product, 'period_start_date')->widget(\kartik\date\DatePicker::className(), [
                     'type' => \kartik\date\DatePicker::TYPE_COMPONENT_PREPEND,
                     'pluginOptions' => [
@@ -120,7 +121,7 @@ if($model_line!=null){
                 ]) ?>
             </div>
             <div class="col-lg-3">
-                <?php //echo $model_product->period_end_date = $model->isNewRecord ? date('d-m-Y') : date('d-m-Y', strtotime($model_product->period_end_date)); ?>
+                <?php  $model_product->period_end_date = $model_product->period_end_date == null ? '': date('d-m-Y', strtotime($model_product->period_end_date)); ?>
                 <?= $form->field($model_product, 'period_end_date')->widget(\kartik\date\DatePicker::className(), [
                     'type' => \kartik\date\DatePicker::TYPE_COMPONENT_PREPEND,
                     'pluginOptions' => [
@@ -170,3 +171,46 @@ if($model_line!=null){
     <?php ActiveForm::end(); ?>
 
 </div>
+<?php
+$url_to_get_address = \yii\helpers\Url::to(['customer/getcusfulladdress'],true);
+$url_to_get_serialno = \yii\helpers\Url::to(['product/getserialno'],true);
+$js=<<<JS
+function showcusaddress(e){
+    var id = e.val();
+    if(id > 0){
+        $.ajax({
+            'type': 'post',
+            'dataType': 'json',
+            'url': '$url_to_get_address',
+            'data': {id:id},
+            'success':function(data){
+                if(data != null){
+                    $(".customer-address").val(data[0].address);
+                }
+            },
+            'error': function(){
+                console.log("error");
+            }
+        });
+    }
+}
+function getserialno(e){
+    var id = e.val();
+    if(id > 0){
+        $.ajax({
+            'type': 'post',
+            'dataType': 'html',
+            'url': '$url_to_get_serialno',
+            'data': {id:id},
+            'success':function(data){
+                $(".serial-no").val(data);
+            },
+            'error': function(){
+                console.log("error");
+            }
+        });
+    }
+}
+JS;
+$this->registerJs($js,static::POS_END);
+?>

@@ -113,6 +113,11 @@ class Customer extends \common\models\Customer
         $model = Customer::find()->where(['id' => $id])->one();
         return $model != null ? $model->address : '';
     }
+    public static function findContactName($id){
+        $name = '';
+        $model =\common\models\ContactInfo::find()->where(['party_type_id'=>2,'party_ref_id'=>$id])->one();
+        return $model != null ? $model->contact_name : '';
+    }
     public static function findAddressProvinceId($id)
     {
         $model = AddressInfo::find()->where(['party_id' => $id,'party_type'=>2])->one();
@@ -185,5 +190,16 @@ class Customer extends \common\models\Customer
             $address_name .= ' '.$model->zipcode;
         }
         return $address_name;
+    }
+
+    public static function findCustomerProvince($customer_id)
+    {
+        $data = [];
+        $model = \common\models\AddressInfo::find()->where(['party_type_id' => 2, 'party_id' => $customer_id,'address_type_id' => 1])->one();
+        if($model){
+            $province_name = Province::find()->where(['PROVINCE_ID' => $model->province_id])->one()->PROVINCE_NAME;
+            array_push($data,['province_id'=>$model->province_id,'province_name'=>$province_name,'zipcode'=>$model->zipcode]);
+        }
+        return $data;
     }
 }

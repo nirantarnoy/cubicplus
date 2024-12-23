@@ -38,7 +38,7 @@ class Ars extends \yii\db\ActiveRecord
             [['log_text'], 'required'],
             [['issue_date'], 'safe'],
             [['customer_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-            [['ars_no','log_text','other_product'], 'string', 'max' => 255],
+            [['ars_no','log_text','other_product','customer_address'], 'string', 'max' => 255],
         ];
     }
 
@@ -54,6 +54,7 @@ class Ars extends \yii\db\ActiveRecord
             'customer_id' => 'Customer',
             'status' => 'Status',
             'other_product' => 'สินค้าอื่นๆ',
+            'customer_address'=>'Customer Address',
             'created_at' => 'สร้างเมื่อ',
             'created_by' => 'สร้างโดย',
             'updated_at' => 'แก้ไขเมื่อ',

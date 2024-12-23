@@ -158,12 +158,12 @@ class ArsController extends Controller
             $issue_date = date('Y-m-d');
             if($exp!=null){
                 if(count($exp)>1){
-                    $w_exp_date = $exp[2].'-'.$exp[1].'-'.$exp[0];
+                    $w_start_date = $exp[2].'-'.$exp[1].'-'.$exp[0];
                 }
             }
             if($exp2!=null){
                 if(count($exp2)>1){
-                    $w_start_date = $exp2[2].'-'.$exp2[1].'-'.$exp2[0];
+                    $w_exp_date = $exp2[2].'-'.$exp2[1].'-'.$exp2[0];
                 }
             }
             if($exp3!=null){
@@ -173,6 +173,9 @@ class ArsController extends Controller
             }
 
             if($model->save(false)){
+                \common\models\ArsLine::deleteAll(['ars_id' => $id]);
+
+                $model_product->ars_id = $model->id;
                 $model_product->period_start_date = date('Y-m-d',strtotime($w_start_date));
                 $model_product->period_end_date = date('Y-m-d',strtotime($w_exp_date));
                 $model_product->save(false);
@@ -224,8 +227,13 @@ class ArsController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionPrint(){
-        return $this->render('_print');
+    public function actionPrint($id){
+
+        $model_product = \common\models\ArsLine::find()->where(['ars_id'=>$id])->one();
+        return $this->render('_print', [
+            'model' => $this->findModel($id),
+            'model_product' => $model_product,
+        ]);
     }
 
     public function actionApprove($id){
@@ -234,6 +242,7 @@ class ArsController extends Controller
             $model = \backend\models\Ars::find()->where(['id'=>$id])->one();
             if($model){
                 $model->status = 1;
+                $model->ars_no = $this->getLastNo($model->customer_id,date('d-m-Y'),substr(date('Y'),2,2));
                 if($model->save(false)){
                     return $this->redirect(['view', 'id' => $id]);
                 }
@@ -244,9 +253,21 @@ class ArsController extends Controller
             return $this->redirect(['view', 'id' => $id]);
         }
     }
-    public function getLastNo(){
+    public function getLastNo($customer_id,$warranty_start_date,$year_end_warranty){
         $runno = '';
-
+        $s_date = '';
+        $x_date = explode('-',$warranty_start_date);
+        if($x_date!=null){
+            if(count($x_date)>1){
+                $s_date = $x_date[0].$x_date[1].substr($x_date[2],2,2);
+            }
+        }
+        $prefix = 'ARP'.$customer_id.'-'.$s_date.'-'.$year_end_warranty;
+        $model = \backend\models\Ars::find()->MAX('id');
+        if($model){
+            $prefix.='-'.$model+1;
+        }
+        $runno = $prefix;
 
         return $runno;
     }

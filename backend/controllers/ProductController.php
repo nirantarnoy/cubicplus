@@ -5,6 +5,7 @@ namespace backend\controllers;
 use backend\models\Product;
 use backend\models\ProductSearch;
 use backend\models\WarehouseSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -536,5 +537,14 @@ class ProductController extends Controller
 
     function getProductOnhand($product_id){
         return \common\models\StockSum::find()->where(['product_id' => $product_id])->sum('qty');
+    }
+    public function actionGetserialno(){
+        $name = '';
+        $product_id = \Yii::$app->request->post('id');
+        if($product_id){
+            $model = \common\models\Product::find()->where(['id' => $product_id])->one();
+            $name = $model == null ? '':$model->serial_no;
+        }
+        echo $name;
     }
 }

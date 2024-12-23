@@ -10,6 +10,8 @@ $this->title = $model->ars_no;
 $this->params['breadcrumbs'][] = ['label' => 'Ars', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+$customer_data = getcusfulladdress($model->customer_id);
 ?>
 <div class="ars-view">
     <p>
@@ -47,7 +49,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td style="width: 20%;background-color: lightgrey;"><b>Issued Date</b></td>
                     <td style="width: 25%"><?= date('d/m/Y', strtotime($model->issue_date)); ?></td>
                     <td style="width: 15%;background-color: lightgrey;"><b>Updated Date</b></td>
-                    <td style="border-right: 1px solid lightgrey;"></td>
+                    <td style="border-right: 1px solid lightgrey;">
+                        <?=$model->updated_at!=null?date('d/m/Y H:i:s',$model->updated_at):''?>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="4" style="background-color: lightblue;"><h6><b>1.
@@ -60,23 +64,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 </tr>
                 <tr>
                     <td style="width: 20%;background-color: lightgrey;"><b>Address</b></td>
-                    <td colspan="3" style="border-right: 1px solid lightgrey;"></td>
+                    <td colspan="3" style="border-right: 1px solid lightgrey;"><?=$model->customer_address?></td>
                 </tr>
                 <tr>
                     <td style="width: 20%;background-color: lightgrey;"><b>Province</b></td>
-                    <td style="width: 25%"></td>
+                    <td style="width: 25%"><?=$customer_data!=null?$customer_data[0]['province_name']:''?></td>
                     <td style="width: 15%;background-color: lightgrey;"><b>Post Code</b></td>
-                    <td style="border-right: 1px solid lightgrey;"></td>
+                    <td style="border-right: 1px solid lightgrey;"><?=$customer_data!=null?$customer_data[0]['postcode']:''?></td>
                 </tr>
                 <tr>
                     <td style="width: 20%;background-color: lightgrey;"><b>Contact Name</b></td>
-                    <td colspan="3" style="border-right: 1px solid lightgrey;"></td>
+                    <td colspan="3" style="border-right: 1px solid lightgrey;"><?=$customer_data!=null?$customer_data[0]['contact_name']:''?></td>
                 </tr>
                 <tr>
                     <td style="width: 20%;background-color: lightgrey;"><b>Mobile no.</b></td>
-                    <td style="width: 25%"></td>
+                    <td style="width: 25%"><?=$customer_data!=null?$customer_data[0]['mobile_phone']:''?></td>
                     <td style="width: 15%;background-color: lightgrey;"><b>Email</b></td>
-                    <td style="border-right: 1px solid lightgrey;"></td>
+                    <td style="border-right: 1px solid lightgrey;"><?=$customer_data!=null?$customer_data[0]['email']:''?></td>
                 </tr>
                 <tr>
                     <td colspan="4" style="background-color: lightblue;"><h6><b>2. ข้อมูลสินค้า Synology</b></h6></td>
@@ -85,11 +89,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     <td style="width: 20%;background-color: lightgrey;"><b>Model Name</b></td>
                     <td style="width: 25%"><?= \backend\models\Product::findSku($model_product->product_id); ?></td>
                     <td style="width: 15%;background-color: lightgrey;"><b>Serial no.</b></td>
-                    <td style="border-right: 1px solid lightgrey;"><?= \backend\models\Product::findSerialNo($model_product->product_id); ?></td>
+                    <td style="border-right: 1px solid lightgrey;"><?= $model_product->serial_no; ?></td>
                 </tr>
                 <tr>
                     <td style="width: 20%;background-color: lightgrey;"><b>Warrantee</b></td>
-                    <td style="width: 25%"></td>
+                    <td style="width: 25%">
+                        <?=\backend\models\Arspackagetype::findName($model_product->warranty_year)?>
+                    </td>
                     <td style="width: 15%;background-color: lightgrey;"><b>Package Type</b></td>
                     <td style="border-right: 1px solid lightgrey;"><?= \backend\models\Installarea::findName($model_product->install_area_id) ?></td>
                 </tr>
@@ -165,3 +171,34 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
 </div>
+
+<?php
+function getcusfulladdress($id){
+        $data = [];
+        $address = '';
+        $province_id = 0;
+        $province_name = '';
+        $postcode = '';
+        $contact_name = '';
+        $mobile_phone = '';
+        $email = '';
+        $data_province = [];
+        if($id){
+            $address = \backend\models\Customer::findFullAddress($id);
+            $mobile_phone = \backend\models\Customer::findPhone($id);
+            $email = \backend\models\Customer::findEmail($id);
+            $contact_name = \backend\models\Customer::findContactName($id);
+            $data_province = \backend\models\Customer::findCustomerProvince($id);
+
+            if($data_province != null){
+                $province_id = $data_province[0]['province_id'];
+                $province_name = $data_province[0]['province_name'];
+                $postcode = $data_province[0]['zipcode'];
+            }
+
+            array_push($data,['address'=>$address,'province_name'=>$province_name,'postcode'=>$postcode,'contact_name'=>$contact_name,'mobile_phone'=>$mobile_phone,'email'=>$email]);
+        }
+
+        return $data;
+    }
+?>

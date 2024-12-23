@@ -214,6 +214,7 @@ class ArsController extends Controller
                 $model_product->ars_id = $model->id;
                 $model_product->period_start_date = date('Y-m-d',strtotime($w_start_date));
                 $model_product->period_end_date = date('Y-m-d',strtotime($w_exp_date));
+                $model_product->qty = 1;
                 $model_product->save(false);
 
                 $model_log = new \common\models\ArsLog();

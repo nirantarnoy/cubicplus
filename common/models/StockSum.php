@@ -31,7 +31,7 @@ class StockSum extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product_id', 'warehouse_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['product_id', 'warehouse_id', 'status', 'created_at', 'updated_at','invent_status'], 'integer'],
             [['qty'], 'number'],
             [['expired_date'],'safe'],
         ];
@@ -49,6 +49,7 @@ class StockSum extends \yii\db\ActiveRecord
             'qty' => 'จำนวน',
             'expired_date' => 'วันที่หมดอายุ',
             'status' => 'สถานะ',
+            'invent_status'=>'สถานะคลัง',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

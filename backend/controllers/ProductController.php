@@ -146,6 +146,7 @@ class ProductController extends Controller
                 $model->warranty_expired_date = date('Y-m-d',strtotime($w_exp_date));
                 $model->warranty_start_date = date('Y-m-d',strtotime($w_start_date));
                 $model->receive_date = date('Y-m-d H:i:s');
+                $model->inventory_status = 0; // ว่าง
                 if ($model->save(false)) {
                     $uploaded = UploadedFile::getInstanceByName('product_photo');
                     $uploaded2 = UploadedFile::getInstanceByName('product_photo_2');

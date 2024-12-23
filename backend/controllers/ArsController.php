@@ -120,6 +120,7 @@ class ArsController extends Controller
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model_product->load($this->request->post())) {
                 $model->status = 0; // waiting
+                $model->ars_no = '';
                 if($model->save(false)){
                     $model_product->ars_id = $model->id;
                     $model_product->save(false);

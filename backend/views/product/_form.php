@@ -126,7 +126,10 @@ if (\Yii::$app->session->hasFlash('msg-error')) {
                 ]) ?>
             </div>
             <div class="col-lg-3">
-                <?= $form->field($model, 'inventory_status')->textInput(['readonly' => 'readonly']) ?>
+                <label for="">สถานะคลัง</label>
+                <input type="text" class="form-control" value="<?=\backend\helpers\InvenStatusType::getTypeById($model->inventory_status)?>" readonly>
+                <?= $form->field($model, 'inventory_status')->hiddenInput(['readonly' => 'readonly'])->label(false) ?>
+
             </div>
 
             <div class="col-lg-3">

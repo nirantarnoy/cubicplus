@@ -119,11 +119,46 @@ class ArsController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model_product->load($this->request->post())) {
+                $issue_date = date('Y-m-d');
+                $exp3 = explode('-',$model->issue_date);
+                if($exp3!=null){
+                    if(count($exp3)>1){
+                        $issue_date = $exp3[2].'-'.$exp3[1].'-'.$exp3[0];
+                    }
+                }
                 $model->status = 0; // waiting
                 $model->ars_no = '';
+                $model->issue_date = date('Y-m-d',strtotime($issue_date));
                 if($model->save(false)){
+
+                    $w_start_date = date('Y-m-d');
+                    $w_exp_date = date('Y-m-d');
+                    $exp = explode('-',$model_product->period_start_date);
+                    $exp2 = explode('-',$model_product->period_end_date);
+
+                    if($exp!=null){
+                        if(count($exp)>1){
+                            $w_start_date = $exp[2].'-'.$exp[1].'-'.$exp[0];
+                        }
+                    }
+                    if($exp2!=null){
+                        if(count($exp2)>1){
+                            $w_exp_date = $exp2[2].'-'.$exp2[1].'-'.$exp2[0];
+                        }
+                    }
+
                     $model_product->ars_id = $model->id;
-                    $model_product->save(false);
+                    $model_product->qty = 1;
+                    $model_product->period_start_date = date('Y-m-d',strtotime($w_start_date));
+                    $model_product->period_end_date = date('Y-m-d',strtotime($w_exp_date));
+                    if($model_product->save(false)){
+                        $model_log = new \common\models\ArsLog();
+                        $model_log->ars_id = $model->id;
+                        $model_log->detail = 'สร้างรายการ';
+                        $model_log->trans_date = date('Y-m-d H:i:s');
+                        $model_log->issue_by  = \Yii::$app->user->id;
+                        $model_log->save(false);
+                    }
                 }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -172,7 +207,7 @@ class ArsController extends Controller
                     $issue_date = $exp3[2].'-'.$exp3[1].'-'.$exp3[0];
                 }
             }
-
+            $model->issue_date = date('Y-m-d',strtotime($issue_date));
             if($model->save(false)){
                 \common\models\ArsLine::deleteAll(['ars_id' => $id]);
 
@@ -245,6 +280,15 @@ class ArsController extends Controller
                 $model->status = 1;
                 $model->ars_no = $this->getLastNo($model->customer_id,date('d-m-Y'),substr(date('Y'),2,2));
                 if($model->save(false)){
+                    $this->createProductIssue($model->id,$model->ars_no);
+
+                    $model_log = new \common\models\ArsLog();
+                    $model_log->ars_id = $model->id;
+                    $model_log->detail = 'Approved';
+                    $model_log->trans_date = date('Y-m-d H:i:s');
+                    $model_log->issue_by  = \Yii::$app->user->id;
+                    $model_log->save(false);
+
                     return $this->redirect(['view', 'id' => $id]);
                 }
             }else{
@@ -271,5 +315,45 @@ class ArsController extends Controller
         $runno = $prefix;
 
         return $runno;
+    }
+    public function createProductIssue($ars_id,$ars_no){
+        if($ars_id){
+            $model_ars_line = \common\models\ArsLine::find()->where(['ars_id'=>$ars_id])->one();
+            if($model_ars_line){
+                if($model_ars_line->product_id != null){
+                    $model_journal = new \backend\models\Journalissue();
+                    $model_journal->journal_no = $model_journal::getLastNo();
+                    $model_journal->trans_date = date('Y-m-d H:i:s');
+                    $model_journal->activity_type_id = 2; // 2 is issue ARS
+                    $model_journal->doc_ref_no = $ars_no;
+                    if($model_journal->save(false)){
+                        $model_journal_line = new \common\models\JouranlIssueLine();
+                        $model_journal_line->journal_issue_id = $model_journal->id;
+                        $model_journal_line->product_id = $model_ars_line->product_id;
+                        $model_journal_line->qty = $model_ars_line->qty;
+                        if($model_journal_line->save(false)){
+                            $model_trans = new \backend\models\Stocktrans();
+                            $model_trans->journal_no = $model_journal->journal_no;//$model_trans::getIssueLastNo();
+                            $model_trans->trans_date = date('Y-m-d H:i:s');
+                            $model_trans->product_id = $model_journal_line->product_id;
+                            $model_trans->qty = (float)$model_journal_line->qty;
+                            $model_trans->activity_type_id = 2; // 2 is deduct issue
+                            $model_trans->stock_type_id = 2; // 1 = in , 2 = out
+                            $model_trans->trans_ref_id = $model_journal->id;
+                            $model_trans->warehouse_id = 1;
+                            if($model_trans->save(false)){
+                                $model_stock = \backend\models\Stocksum::find()->where(['product_id' => $model_journal_line->product_id])->andFilterWhere(['>=','qty',(float)$model_journal_line->qty])->one();
+                                if ($model_stock) {
+                                    if ($model_stock->qty >= $model_journal_line->qty) {
+                                        $model_stock->qty = (float)$model_stock->qty - (float)$model_journal_line->qty;
+                                        $model_stock->save(false);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

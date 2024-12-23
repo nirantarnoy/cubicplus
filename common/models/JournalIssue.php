@@ -34,7 +34,7 @@ class JournalIssue extends \yii\db\ActiveRecord
     {
         return [
             [['trans_date'], 'safe'],
-            [['issue_for_id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
+            [['issue_for_id', 'created_at', 'created_by', 'updated_at', 'updated_by','activity_type_id'], 'integer'],
             [['journal_no', 'remark','doc_ref_no'], 'string', 'max' => 255],
         ];
     }
@@ -51,6 +51,7 @@ class JournalIssue extends \yii\db\ActiveRecord
             'issue_for_id' => 'เลขที่คำสั่งซื้อ',
             'doc_ref_no' => 'อ้างอิง',
             'remark' => 'หมายเหตุ',
+            'activity_type_id'=>'กิจกรรมอ้างอิง',
             'created_at' => 'สร้างเมื่อ',
             'created_by' => 'สร้างโดย',
             'updated_at' => 'แก้ไขเมื่อ',

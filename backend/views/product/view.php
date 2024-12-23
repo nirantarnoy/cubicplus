@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             if ($data->inventory_status == 0) {
                                 return '<div class="badge badge-success" >'.$inv_status.'</div>';
                             } else {
-                                return '<div class="badge badge-secondary" >'.$inv_status.'</div>';
+                                return '<div class="badge badge-danger" >'.$inv_status.'</div>';
                             }
                         }
                     ],

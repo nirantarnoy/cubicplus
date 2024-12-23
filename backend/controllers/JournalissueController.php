@@ -83,8 +83,10 @@ class JournalissueController extends Controller
      */
     public function actionView($id)
     {
+        $model_line = \common\models\JouranlIssueLine::find()->where(['journal_issue_id'=>$id])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'model_line' => $model_line,
         ]);
     }
 
@@ -119,6 +121,7 @@ class JournalissueController extends Controller
                             $model_line->product_id = $line_item_id[$i];
                             $model_line->qty = $line_qty[$i];
                             $model_line->status = 0;
+                            $model_line->remark = $line_remark[$i];
                             $model_line->warehouse_id = $line_warehouse_id[$i];
                            // $model_line->reason = $line_remark[$i];
                             if ($model_line->save(false)) {
@@ -134,9 +137,14 @@ class JournalissueController extends Controller
                                 if ($model_trans->save(false)) {
                                     $model_stock = \backend\models\Stocksum::find()->where(['product_id' => $line_item_id[$i], 'warehouse_id' => $line_warehouse_id[$i]])->one();
                                     if ($model_stock) {
-                                        $model_stock->qty = (float)$model_stock->qty - (float)$line_qty[$i];
-                                   //     $model_stock->last_update = date('Y-m-d H:i:s');
-                                        $model_stock->save(false);
+                                        if($model_stock->qty >= $model_trans->qty){
+                                            $model_stock->qty = (float)$model_stock->qty - (float)$line_qty[$i];
+                                            //     $model_stock->last_update = date('Y-m-d H:i:s');
+                                            if($model_stock->save(false)){
+                                                \common\models\Product::updateAll(['inventory_status' => $model->activity_type_id], ['id' => $line_item_id[$i]]);
+                                            }
+                                        }
+
                                     } else {
 //                                        $model_new = new \backend\models\Stocksum();
 //                                        $model_new->company_id = 1;

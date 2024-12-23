@@ -67,7 +67,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return date('d-m-Y', strtotime($data->trans_date));
                 }
             ],
-            'reason',
+            [
+                'attribute' => 'activity_type_id',
+                'value' => function ($data) {
+                    return \backend\helpers\IssueactivityType::getTypeById($data->activity_type_id);
+                }
+            ],
+            'doc_ref_no',
             [
 
                 'header' => 'ตัวเลือก',

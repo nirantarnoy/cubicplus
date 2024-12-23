@@ -14,10 +14,10 @@ $warehouse_data = \backend\models\Warehouse::find()->where(['status' => 1])->all
         <?php $form = ActiveForm::begin(); ?>
         <input type="hidden" name="removelist" class="remove-list" value="">
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <?= $form->field($model, 'journal_no')->textInput(['maxlength' => true, 'readonly' => 'readonly']) ?>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <?php $model->trans_date = $model->isNewRecord ? date('d-m-Y') : date('d-m-Y', strtotime($model->trans_date)) ?>
                 <?= $form->field($model, 'trans_date')->widget(\kartik\date\DatePicker::className(), [
                     'value' => date('d-m-Y'),
@@ -26,20 +26,27 @@ $warehouse_data = \backend\models\Warehouse::find()->where(['status' => 1])->all
                     ]
                 ]) ?>
             </div>
-            <div class="col-lg-4">
-<!--                --><?php //= $form->field($model, 'issue_for_id')->widget(\kartik\select2\Select2::className(), [
-//                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Order::find()->all(), 'id', 'order_no'),
-//                    'pluginOptions' => [
-//                        'allowClear' => false,
-//                        'disabled' => true,
-//                    ]
-//                ]) ?>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'activity_type_id')->widget(\kartik\select2\Select2::className(), [
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\helpers\IssueactivityType::asArrayObject(), 'id', 'name'),
+                    'options' => ['placeholder' => 'Select Activity Type'],
+                    'pluginOptions' => ['allowClear' => true],
+                ]) ?>
+            </div>
+            <div class="col-lg-3">
+                <!--                --><?php //= $form->field($model, 'issue_for_id')->widget(\kartik\select2\Select2::className(), [
+                //                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Order::find()->all(), 'id', 'order_no'),
+                //                    'pluginOptions' => [
+                //                        'allowClear' => false,
+                //                        'disabled' => true,
+                //                    ]
+                //                ]) ?>
                 <?= $form->field($model, 'doc_ref_no')->textInput(['maxlength' => true]) ?>
             </div>
         </div>
         <div class="row">
 
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <?php //echo $form->field($model, 'status')->textInput() ?>
             </div>
         </div>
@@ -202,7 +209,7 @@ $warehouse_data = \backend\models\Warehouse::find()->where(['status' => 1])->all
                     <tfoot>
                     <tr>
                         <td style="text-align: center;">
-                               <div class="btn btn-sm btn-primary" onclick="finditem();"><i class="fa fa-plus"></i></div>
+                            <div class="btn btn-sm btn-primary" onclick="finditem();"><i class="fa fa-plus"></i></div>
                         </td>
                         <td colspan="4" style="text-align: right">รวม</td>
                         <td>
@@ -218,7 +225,7 @@ $warehouse_data = \backend\models\Warehouse::find()->where(['status' => 1])->all
         <div class="row">
             <div class="col-lg-2">
                 <div class="form-group">
-                    <?php if($model->isNewRecord):?>
+                    <?php if ($model->isNewRecord): ?>
                         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
                     <?php endif; ?>
                 </div>

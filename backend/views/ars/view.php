@@ -103,7 +103,7 @@ $customer_data = getcusfulladdress($model->customer_id);
                     <td style="width: 20%;background-color: lightgrey;"><b>Period Start Date</b></td>
                     <td style="width: 25%"><?= $model_product->period_start_date != null ? date('d/m/Y', strtotime($model_product->period_start_date)) : ''; ?></td>
                     <td style="width: 15%;background-color: lightgrey;"><b>Period End Date</b></td>
-                    <td style="border-right: 1px solid lightgrey;"><?= $model_product->period_end_date != null ? date('d/m/Y', strtotime($model_product->period_start_date)) : ''; ?></td>
+                    <td style="border-right: 1px solid lightgrey;"><?= $model_product->period_end_date != null ? date('d/m/Y', strtotime($model_product->period_end_date)) : ''; ?></td>
                 </tr>
                 <tr>
                     <td style="width: 20%;background-color: lightgrey;"><b>Installation Location</b></td>

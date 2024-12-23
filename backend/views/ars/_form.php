@@ -52,7 +52,14 @@ if($model_line!=null){
                 <?= $form->field($model, 'customer_address')->textarea(['class'=>'form-control customer-address'])->label(false) ?>
             </div>
             <div class="col-lg-3">
-                <?= $form->field($model, 'issue_date')->textInput() ?>
+                <?php $model->issue_date = $model->issue_date == null ? '': date('d-m-Y', strtotime($model->issue_date)); ?>
+                <?= $form->field($model, 'issue_date')->widget(\kartik\date\DatePicker::className(), [
+                    'type' => \kartik\date\DatePicker::TYPE_COMPONENT_PREPEND,
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'dd-mm-yyyy',
+                    ]
+                ]) ?>
             </div>
         </div>
     </div>

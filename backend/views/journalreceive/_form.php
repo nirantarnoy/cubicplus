@@ -32,6 +32,9 @@ $product_data = \backend\models\Product::find()->all();
         <div class="col-lg-3">
             <?= $form->field($model, 'po_ref_no')->textInput(['maxlength' => true]) ?>
         </div>
+        <div class="col-lg-3">
+            <?= $form->field($model, 'reseller_name')->textInput(['maxlength' => true]) ?>
+        </div>
 
     </div>
     <div class="row">

@@ -34,7 +34,7 @@ class JournalReceive extends \yii\db\ActiveRecord
         return [
             [['trans_date'], 'safe'],
             [['created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-            [['journal_no', 'remark','po_ref_no'], 'string', 'max' => 255],
+            [['journal_no', 'remark','po_ref_no','reseller_name'], 'string', 'max' => 255],
         ];
     }
 
@@ -49,6 +49,7 @@ class JournalReceive extends \yii\db\ActiveRecord
             'trans_date' => 'วันทึ่',
             'remark' => 'หมายเหตุ',
             'po_ref_no' => 'เลขที่ PO',
+            'reseller_name'=>'ชื่อผู้ขาย/Reseller',
             'created_at' => 'สร้างเมื่อ',
             'created_by' => 'สร้างโดย',
             'updated_at' => 'แก้ไขเมื่อ',

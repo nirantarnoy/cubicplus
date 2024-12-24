@@ -153,7 +153,7 @@ class JournalreceiveController extends Controller
                                         $model_new->save(false);
                                     }
 
-                                    \backend\models\Product::updateAll(['receive_date' => date('Y-m-d H:i:s')], ['id' => $line_item_id[$i]]);
+                                    \backend\models\Product::updateAll(['receive_date' => date('Y-m-d H:i:s'),'po_date' => date('Y-m-d H:i:s'),'po_no'=>$model->po_ref_no,'reseller_name'=>$model->reseller_name], ['id' => $line_item_id[$i]]);
                                 }
                             }
                         }

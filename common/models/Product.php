@@ -69,7 +69,7 @@ class Product extends \yii\db\ActiveRecord
             'remark' => 'Remark',
             'status' => 'สถานะใช้งาน',
             'is_company_product'=>'is_company_product',
-            'distributor_id'=>'ผู้จัดจำหน่าย',
+            'distributor_id'=>'Distributor',
             'inventory_status'=>'สถานะคลัง',
             'serial_no'=>'Serial No',
             'receive_date'=> 'วันที่รับสินค้า',

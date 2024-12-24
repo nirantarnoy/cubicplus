@@ -7,6 +7,7 @@ use yii\widgets\ActiveForm;
 /** @var backend\models\Ars $model */
 /** @var yii\widgets\ActiveForm $form */
 
+$product_purch_date = [];
 
 if($model_line!=null){
     foreach ($model_line as $value) {
@@ -21,6 +22,10 @@ if($model_line!=null){
         $model_product->serial_no = $value->serial_no;
 
     }
+}
+
+if($model_product->product_id){
+    $product_purch_date = getpurchdata($model_product->product_id);
 }
 
 ?>
@@ -152,6 +157,28 @@ if($model_line!=null){
         </div>
     </div>
 
+    <div class="card" style="padding: 10px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <h4>4. ข้อมูลการซื้อสินค้า</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <label for="">Reseller</label>
+                <input type="text" class="form-control reseller-name" value="<?=$product_purch_date!=null?$product_purch_date[0]['reseller_name']:''?>" readonly>
+            </div>
+            <div class="col-lg-4">
+                <label for="">PO No.</label>
+                <input type="text" class="form-control po-no" value="<?=$product_purch_date!=null?$product_purch_date[0]['po_no']:''?>" readonly>
+            </div>
+            <div class="col-lg-4">
+                <label for="">PO Date</label>
+                <input type="text" class="form-control po-date" value="<?=$product_purch_date!=null?$product_purch_date[0]['po_date']:''?>" readonly>
+            </div>
+        </div>
+    </div>
+
 <!--    <div class="row">-->
 <!--        <div class="col-lg-3">-->
 <!--            --><?php //= $form->field($model, 'status')->textInput() ?>
@@ -179,8 +206,22 @@ if($model_line!=null){
 
 </div>
 <?php
+function getpurchdata($product_id){
+        $data = [];
+        if($product_id){
+            $model = \common\models\Product::find()->where(['id' => $product_id])->one();
+            if($model){
+                array_push($data, ['reseller_name'=>$model->reseller_name,'po_no'=>$model->po_no,'po_date'=>$model->po_date !=null ?date('d/m/Y',strtotime($model->po_date)):'']);
+            }
+        }
+        return $data;
+    }
+?>
+<?php
 $url_to_get_address = \yii\helpers\Url::to(['customer/getcusfulladdress'],true);
 $url_to_get_serialno = \yii\helpers\Url::to(['product/getserialno'],true);
+$url_to_get_product_purch = \yii\helpers\Url::to(['product/getpurchdata'],true);
+
 $js=<<<JS
 function showcusaddress(e){
     var id = e.val();
@@ -216,6 +257,31 @@ function getserialno(e){
                 console.log("error");
             }
         });
+        
+        getproductpurch(e);
+    }
+}
+
+function getproductpurch(e){
+    var id = e.val();
+    if(id > 0){
+        $.ajax({
+            'type': 'post',
+            'dataType': 'json',
+            'url': '$url_to_get_product_purch',
+            'data': {id:id},
+            'success':function(data){
+                if(data!=null){
+                    $(".reseller-name").val(data[0].reseller_name);
+                    $(".po-no").val(data[0].po_no);
+                    $(".po-date").val(data[0].po_date);
+                }
+            },
+            'error': function(){
+                console.log("error");
+            }
+        });
+        
     }
 }
 JS;

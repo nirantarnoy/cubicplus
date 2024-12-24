@@ -564,4 +564,15 @@ class ProductController extends Controller
         }
         echo $name;
     }
+    public function actionGetpurchdata(){
+        $data = [];
+        $product_id = \Yii::$app->request->post('id');
+        if($product_id){
+            $model = \common\models\Product::find()->where(['id' => $product_id])->one();
+            if($model){
+                array_push($data, ['reseller_name'=>$model->reseller_name,'po_no'=>$model->po_no,'po_date'=>$model->po_date !=null ?date('d/m/Y',strtotime($model->po_date)):'']);
+            }
+        }
+        echo json_encode($data);
+    }
 }

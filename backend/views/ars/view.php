@@ -11,6 +11,11 @@ $this->params['breadcrumbs'][] = ['label' => 'Ars', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 
+$product_purch_data = [];
+if($model_product->product_id){
+    $product_purch_data = getpurchdata($model_product->product_id);
+}
+
 $customer_data = getcusfulladdress($model->customer_id);
 ?>
 <div class="ars-view">
@@ -132,6 +137,21 @@ $customer_data = getcusfulladdress($model->customer_id);
                         <?= $model->other_product; ?>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="4" style="background-color: lightblue;"><h6><b>4.
+                                ข้อมูลการซื้อ</b></h6></td>
+
+                </tr>
+                <tr>
+                    <td style="width: 20%;background-color: lightgrey;"><b>ผู้ขายสินค้า/Reseller</b></td>
+                    <td colspan="3" style="border-right: 1px solid lightgrey;"><?=$product_purch_data!=null?$product_purch_data[0]['reseller_name']:''?></td>
+                </tr>
+                <tr>
+                    <td style="width: 20%;background-color: lightgrey;"><b>SIS PO no.</b></td>
+                    <td style="width: 25%"><?=$product_purch_data!=null?$product_purch_data[0]['po_no']:''?></td>
+                    <td style="width: 15%;background-color: lightgrey;"><b>PO Date</b></td>
+                    <td style="border-right: 1px solid lightgrey;"><?=$product_purch_data!=null?$product_purch_data[0]['po_date']:''?></td>
+                </tr>
             </table>
         </div>
     </div>
@@ -173,6 +193,20 @@ $customer_data = getcusfulladdress($model->customer_id);
 </div>
 
 <?php
+
+
+function getpurchdata($product_id)
+{
+    $data = [];
+    if ($product_id) {
+        $model = \common\models\Product::find()->where(['id' => $product_id])->one();
+        if ($model) {
+            array_push($data, ['reseller_name' => $model->reseller_name, 'po_no' => $model->po_no, 'po_date' => $model->po_date != null ? date('d/m/Y', strtotime($model->po_date)) : '']);
+        }
+    }
+    return $data;
+}
+
 function getcusfulladdress($id){
         $data = [];
         $address = '';

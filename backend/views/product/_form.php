@@ -135,7 +135,7 @@ if (\Yii::$app->session->hasFlash('msg-error')) {
         </div>
         <div class="row">
             <div class="col-lg-3">
-                <?php $model->po_date = $model->isNewRecord ? date('d-m-Y') : date('d-m-Y', strtotime($model->po_date)); ?>
+                <?php $model->po_date = $model->po_date == null ? date('d-m-Y') : date('d-m-Y', strtotime($model->po_date)); ?>
                 <?= $form->field($model, 'po_date')->widget(\kartik\date\DatePicker::className(), [
                     'pluginOptions' => [
                         'format' => 'dd-mm-yyyy',

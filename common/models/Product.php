@@ -42,10 +42,10 @@ class Product extends \yii\db\ActiveRecord
         return [
             [['name','sku'],'required'],
             [['serial_no'],'unique', 'targetAttribute' => ['serial_no']],
-            [['product_category_id', 'unit_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by','is_company_product','distributor_id','inventory_status','brand_id','invent_status'], 'integer'],
+            [['product_category_id', 'unit_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by','is_company_product','distributor_id','inventory_status','brand_id','invent_status','reseller_id'], 'integer'],
             [['cost', 'sale_price', 'commission'], 'number'],
-            [['description', 'photo', 'remark','photo_2','photo_3','brand_name','serial_no'], 'string', 'max' => 255],
-            [['receive_date','warranty_expired_date','warranty_start_date'],'safe'],
+            [['description', 'photo', 'remark','photo_2','photo_3','brand_name','serial_no','reseller_name','po_no'], 'string', 'max' => 255],
+            [['receive_date','warranty_expired_date','warranty_start_date','po_date'],'safe'],
            // 'skipOnEmpty' => false,
         ];
     }
@@ -75,6 +75,10 @@ class Product extends \yii\db\ActiveRecord
             'receive_date'=> 'วันที่รับสินค้า',
             'brand_id'=>'ยี่ห้อ',
             'branch_name'=>'ชื่อยี่ห้อ',
+            'po_no' => 'SIS PO no.',
+            'po_date'=>'วันที่เอกสาร PO',
+            'reseller_id'=> 'reseller_id',
+            'reseller_name'=>'ชื่อผู้ขาย/Reseller',
             'created_at' => 'สร้างเมื่อ',
             'created_by' => 'สร้างโดย',
             'updated_at' => 'แก้ไขเมื่อ',

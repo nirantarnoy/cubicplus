@@ -58,6 +58,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     'cost',
                     'sale_price',
                     'commission',
+                    ['attribute' => 'warranty_start_date', 'value' => function ($data) {
+                        return $data->warranty_start_date == null ? '' : date('d-m-Y', strtotime($data->warranty_start_date));
+                    }],
+
+                    ['attribute' => 'warranty_expired_date', 'value' => function ($data) {
+                        return $data->warranty_expired_date == null ? '' : date('d-m-Y', strtotime($data->warranty_expired_date));
+                    }],
 
                 ],
             ]) ?>
@@ -66,13 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
-                    ['attribute' => 'warranty_start_date', 'value' => function ($data) {
-                        return $data->warranty_start_date == null ? '' : date('d-m-Y', strtotime($data->warranty_start_date));
-                    }],
 
-                    ['attribute' => 'warranty_expired_date', 'value' => function ($data) {
-                        return $data->warranty_expired_date == null ? '' : date('d-m-Y', strtotime($data->warranty_expired_date));
-                    }],
 
                     [
                         'attribute' => 'status',
@@ -108,6 +109,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         }
                     ],
                     'remark',
+                    'reseller_name',
+                    'po_no',
+                    [
+                        'attribute' => 'po_date',
+                        'value' => function ($data) {
+                            return $data->po_date!=null? date('d-m-Y H:i:s', strtotime($data->po_date)):'';
+                        }
+                    ],
                     [
                         'attribute' => 'created_at',
                         'value' => function ($data) {

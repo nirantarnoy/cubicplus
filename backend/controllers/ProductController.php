@@ -121,9 +121,11 @@ class ProductController extends Controller
                 $exp = explode('-',$model->warranty_expired_date);
                 $exp2 = explode('-',$model->warranty_start_date);
                 $exp3 = explode('-',$model->receive_date);
+                $exp4 = explode('-',$model->po_date);
                 $w_start_date = date('Y-m-d');
                 $w_exp_date = date('Y-m-d');
                 $rec_date = date('Y-m-d');
+                $po_date = date('Y-m-d');
                 if($exp!=null){
                     if(count($exp)>1){
                         $w_exp_date = $exp[2].'-'.$exp[1].'-'.$exp[0];
@@ -139,12 +141,18 @@ class ProductController extends Controller
                         $rec_date = $exp3[2].'-'.$exp3[1].'-'.$exp3[0];
                     }
                 }
+                if($exp4!=null){
+                    if(count($exp4)>1){
+                        $po_date = $exp4[2].'-'.$exp4[1].'-'.$exp4[0];
+                    }
+                }
 
 
                 //  $model->code = $model->sku;
                //  $model->is_special = 0;
                 $model->warranty_expired_date = date('Y-m-d',strtotime($w_exp_date));
                 $model->warranty_start_date = date('Y-m-d',strtotime($w_start_date));
+                $model->po_date = date('Y-m-d',strtotime($po_date));
                 $model->receive_date = date('Y-m-d H:i:s');
                 $model->inventory_status = 0; // ว่าง
                 if ($model->save(false)) {
@@ -255,9 +263,11 @@ class ProductController extends Controller
             $exp = explode('-',$model->warranty_expired_date);
             $exp2 = explode('-',$model->warranty_start_date);
             $exp3 = explode('-',$model->receive_date);
+            $exp4 = explode('-',$model->po_date);
             $w_start_date = date('Y-m-d');
             $w_exp_date = date('Y-m-d');
             $rec_date = date('Y-m-d');
+            $po_date = date('Y-m-d');
             if($exp!=null){
                 if(count($exp)>1){
                     $w_exp_date = $exp[2].'-'.$exp[1].'-'.$exp[0];
@@ -273,6 +283,11 @@ class ProductController extends Controller
                     $rec_date = $exp3[2].'-'.$exp3[1].'-'.$exp3[0];
                 }
             }
+            if($exp4!=null){
+                if(count($exp4)>1){
+                    $po_date = $exp4[2].'-'.$exp4[1].'-'.$exp4[0];
+                }
+            }
 
 
             //  $model->code = $model->sku;
@@ -280,6 +295,7 @@ class ProductController extends Controller
             $model->warranty_expired_date = date('Y-m-d',strtotime($w_exp_date));
             $model->warranty_start_date = date('Y-m-d',strtotime($w_start_date));
             $model->receive_date = date('Y-m-d H:i:s',strtotime($rec_date));
+            $model->po_date = date('Y-m-d H:i:s',strtotime($po_date));
             if ($model->save(false)) {
                 if (!empty($uploaded)) {
                     $upfiles = "photo_1" . time() . "." . $uploaded->getExtension();

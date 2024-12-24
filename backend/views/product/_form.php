@@ -126,6 +126,25 @@ if (\Yii::$app->session->hasFlash('msg-error')) {
                 ]) ?>
             </div>
             <div class="col-lg-3">
+                <?= $form->field($model, 'reseller_name')->textInput() ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'po_no')->textInput() ?>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <?php $model->po_date = $model->isNewRecord ? date('d-m-Y') : date('d-m-Y', strtotime($model->po_date)); ?>
+                <?= $form->field($model, 'po_date')->widget(\kartik\date\DatePicker::className(), [
+                    'pluginOptions' => [
+                        'format' => 'dd-mm-yyyy',
+                        'autoclose' => true,
+                        'todayHighlight' => true,
+                    ]
+                ]) ?>
+            </div>
+            <div class="col-lg-3">
                 <label for="">สถานะคลัง</label>
                 <input type="text" class="form-control" value="<?=\backend\helpers\InvenStatusType::getTypeById($model->inventory_status)?>" readonly>
                 <?= $form->field($model, 'inventory_status')->hiddenInput(['readonly' => 'readonly'])->label(false) ?>

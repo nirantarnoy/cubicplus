@@ -8,12 +8,12 @@ use yii\widgets\ActiveForm;
 /** @var backend\models\Quotation $model */
 /** @var yii\widgets\ActiveForm $form */
 
-$unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status'=>1])->all();
+$unit_data = \backend\models\Unit::find()->select(['id', 'name'])->where(['status' => 1])->all();
 ?>
 
 <div class="quotation-form">
 
-    <?php $form = ActiveForm::begin(['id' => 'form-quotation','options'=>['enctype'=>'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'form-quotation', 'options' => ['enctype' => 'multipart/form-data']]); ?>
     <input type="hidden" name="removelist" class="remove-list" value="">
     <div class="row">
         <div class="col-lg-3">
@@ -32,19 +32,19 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
         <div class="col-lg-3">
             <?= $form->field($model, 'customer_id')->widget(\kartik\select2\Select2::className(), [
                 'data' => ArrayHelper::map(common\models\Customer::find()->all(), 'id', 'first_name'),
-                'options' => ['placeholder' => '--เลือกลูกค้า--','onchange'=>'getAttn($(this))'],
+                'options' => ['placeholder' => '--เลือกลูกค้า--', 'onchange' => 'getAttn($(this))'],
                 'pluginOptions' => ['allowClear' => true],
             ]) ?>
         </div>
         <div class="col-lg-3">
             <?= $form->field($model, 'attn_id')->widget(\kartik\select2\Select2::className(), [
-                'data' => ArrayHelper::map(\common\models\ContactInfo::find()->all(), 'id', function($data){
-                    return $data->dept_name.' '.$data->contact_name;
+                'data' => ArrayHelper::map(\common\models\ContactInfo::find()->all(), 'id', function ($data) {
+                    return $data->dept_name . ' ' . $data->contact_name;
                 }),
                 'pluginOptions' => ['allowClear' => true],
                 'options' => [
                     'placeholder' => '--เลือก--',
-                    'id'=>'select-attn-id'
+                    'id' => 'select-attn-id'
                 ]
             ]) ?>
         </div>
@@ -66,13 +66,30 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-3"><?= $form->field($model, 'discount_per')->textInput(['maxlength' => true,'class'=>'form-control discount-per','value'=>$model->discount_per == null?0:$model->discount_per]) ?></div>
-        <div class="col-lg-3"><?= $form->field($model, 'discount_amt')->textInput(['maxlength' => true,'class'=>'form-control discount-amt','readonly'=>'readonly','value'=>$model->isNewRecord ?0:$model->discount_amt]) ?></div>
+        <div class="col-lg-3"><?= $form->field($model, 'discount_per')->textInput(['maxlength' => true, 'class' => 'form-control discount-per', 'value' => $model->discount_per == null ? 0 : $model->discount_per]) ?></div>
+        <div class="col-lg-3"><?= $form->field($model, 'discount_amt')->textInput(['maxlength' => true, 'class' => 'form-control discount-amt', 'readonly' => 'readonly', 'value' => $model->isNewRecord ? 0 : $model->discount_amt]) ?></div>
         <div class="col-lg-3">
-            <?= $form->field($model, 'revise_no')->textInput(['maxlength' => true,'readonly'=>'readonly']) ?>
+            <?= $form->field($model, 'revise_no')->textInput(['maxlength' => true, 'readonly' => 'readonly']) ?>
         </div>
         <div class="col-lg-3">
             <?= $form->field($model, 'due_date_amt')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <?= $form->field($model, 'commission_amt')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-lg-3">
+            <?= $form->field($model, 'commission_emp_id')->widget(\kartik\select2\Select2::className(), [
+                'data' => ArrayHelper::map(\backend\models\User::find()->all(), 'id', 'username'),
+                'options' => [
+                    'placeholder' => 'Select commission user'
+                ],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                ]
+
+            ]) ?>
         </div>
     </div>
     <br/>
@@ -118,13 +135,13 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
                                    onchange="linecal($(this))">
                         </td>
                         <td style="text-align: center;">
-<!--                            <input type="hidden" class="line-product-unit-id" value="" name="line_unit_id[]">-->
-<!--                            <input type="text" class="form-control line-product-unit-name" name="line_unit[]" value=""-->
-<!--                                   readonly>-->
+                            <!--                            <input type="hidden" class="line-product-unit-id" value="" name="line_unit_id[]">-->
+                            <!--                            <input type="text" class="form-control line-product-unit-name" name="line_unit[]" value=""-->
+                            <!--                                   readonly>-->
                             <select name="line_unit_id[]" id="" class="form-control line-product-unit-id">
-                                <?php foreach ($unit_data as $valuex):?>
-                                    <option value="<?=$valuex->id?>"><?=$valuex->name?></option>
-                                <?php endforeach;?>
+                                <?php foreach ($unit_data as $valuex): ?>
+                                    <option value="<?= $valuex->id ?>"><?= $valuex->name ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </td>
                         <td style="text-align: right">
@@ -136,20 +153,21 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
                                    name="line_total[]" value="" readonly>
                         </td>
                         <td style="text-align: center;">
-<!--                            <input type="file" style="display: none;" class="line-photo" id="1" name="line_photo[]" value="">-->
-<!--                            <input type="hidden" class="line-photo-index" name="line_photo_index[]" value="">-->
-<!--                            <div class="btn btn-sm btn-default" onclick="showphoto($(this))"><i class="fas fa-file-upload text-danger"></i></div>-->
+                            <!--                            <input type="file" style="display: none;" class="line-photo" id="1" name="line_photo[]" value="">-->
+                            <!--                            <input type="hidden" class="line-photo-index" name="line_photo_index[]" value="">-->
+                            <!--                            <div class="btn btn-sm btn-default" onclick="showphoto($(this))"><i class="fas fa-file-upload text-danger"></i></div>-->
                             <div class="btn btn-sm btn-danger" onclick="removeline($(this))">ลบ</div>
                         </td>
                     </tr>
                 <?php else: ?>
-                <?php $line_num =0;?>
+                    <?php $line_num = 0; ?>
                     <?php if ($model_line != null): ?>
                         <?php foreach ($model_line as $value): ?>
-                            <?php $line_num +=1;?>
+                            <?php $line_num += 1; ?>
                             <tr data-var="<?= $value->id ?>">
                                 <td style="text-align: center;">
-                                    <input type="text" style="text-align: center;" class="form-control" readonly value="<?=$line_num?>">
+                                    <input type="text" style="text-align: center;" class="form-control" readonly
+                                           value="<?= $line_num ?>">
                                 </td>
                                 <td>
                                     <input type="hidden" class="line-rec-id" name="line_recid[]"
@@ -162,49 +180,54 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
                                 </td>
                                 <td>
                                     <input type="text" class="form-control line-product-name" name="line_product_name[]"
-                                           value="<?= $value->product_name != '' ? $value->product_name: \backend\models\Product::findSerialNo($value->product_id) ?>" <?=check_is_drummy($value->product_id) == 1 ?'':'readonly'?>>
+                                           value="<?= $value->product_name != '' ? $value->product_name : \backend\models\Product::findSerialNo($value->product_id) ?>" <?= check_is_drummy($value->product_id) == 1 ? '' : 'readonly' ?>>
                                 </td>
                                 <td>
                                     <input type="text" class="form-control line-product-mat" name="line_product_mat[]"
-                                           value="<?=$value->mat_desc?>">
+                                           value="<?= $value->mat_desc ?>">
                                 </td>
                                 <td style="text-align: right;">
                                     <input type="number" class="form-control line-qty" name="line_qty[]" min="0"
                                            onchange="linecal($(this))" value="<?= $value->qty ?>">
                                 </td>
                                 <td style="text-align: center;">
-<!--                                    <input type="hidden" class="line-product-unit-id" value="--><?php //= $value->unit_id ?><!--"-->
-<!--                                           name="line_unit_id[]">-->
-<!--                                    <input type="text" class="form-control line-product-unit-name" name="line_unit[]"-->
-<!--                                           value="--><?php //= \backend\models\Unit::findName($value->unit_id) ?><!--" readonly>-->
+                                    <!--                                    <input type="hidden" class="line-product-unit-id" value="-->
+                                    <?php //= $value->unit_id ?><!--"-->
+                                    <!--                                           name="line_unit_id[]">-->
+                                    <!--                                    <input type="text" class="form-control line-product-unit-name" name="line_unit[]"-->
+                                    <!--                                           value="-->
+                                    <?php //= \backend\models\Unit::findName($value->unit_id) ?><!--" readonly>-->
                                     <select name="line_unit_id[]" id="" class="form-control line-product-unit-id">
-                                        <?php foreach ($unit_data as $valuex):?>
-                                        <?php
+                                        <?php foreach ($unit_data as $valuex): ?>
+                                            <?php
                                             $selected = '';
-                                            if($value->unit_id == $valuex->id){
+                                            if ($value->unit_id == $valuex->id) {
                                                 $selected = 'selected';
                                             }
                                             ?>
-                                            <option value="<?=$valuex->id?>" <?=$selected?>><?=$valuex->name?></option>
-                                        <?php endforeach;?>
+                                            <option value="<?= $valuex->id ?>" <?= $selected ?>><?= $valuex->name ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </td>
                                 <td style="text-align: right">
                                     <input type="text" class="form-control line-price" name="line_price[]"
-                                           value="<?= $value->line_price?>" onchange="linecal($(this))">
+                                           value="<?= $value->line_price ?>" onchange="linecal($(this))">
                                 </td>
                                 <td style="text-align: right">
                                     <input type="text" style="text-align: right;" class="form-control line-total"
-                                           name="line_total[]" value="<?= number_format($value->line_total,2) ?>" readonly>
+                                           name="line_total[]" value="<?= number_format($value->line_total, 2) ?>"
+                                           readonly>
                                 </td>
                                 <td style="text-align: center;">
-<!--                                    <input type="file" style="display: none;" class="line-photo" name="line_photo[]">-->
-<!--                                    <input type="hidden" class="line-photo" value="--><?php //=$value->photo?><!--">-->
-<!--                                    --><?php //if($value->photo!=null || $value->photo!=''):?>
-<!--                                        <a class="btn btn-sm btn-default" target="_blank" href="--><?php //= \Yii::$app->getUrlManager()->baseUrl . '/uploads/quotation_photo/' . $value->photo ?><!--"><i class="fas fa-file-upload text-success"></i></a>-->
-<!--                                    --><?php //else:?>
-<!--                                        <div class="btn btn-sm btn-default" onclick="showphoto($(this))"><i class="fas fa-file-upload text-danger"></i></div>-->
-<!--                                    --><?php //endif;?>
+                                    <!--                                    <input type="file" style="display: none;" class="line-photo" name="line_photo[]">-->
+                                    <!--                                    <input type="hidden" class="line-photo" value="-->
+                                    <?php //=$value->photo?><!--">-->
+                                    <!--                                    --><?php //if($value->photo!=null || $value->photo!=''):?>
+                                    <!--                                        <a class="btn btn-sm btn-default" target="_blank" href="-->
+                                    <?php //= \Yii::$app->getUrlManager()->baseUrl . '/uploads/quotation_photo/' . $value->photo ?><!--"><i class="fas fa-file-upload text-success"></i></a>-->
+                                    <!--                                    --><?php //else:?>
+                                    <!--                                        <div class="btn btn-sm btn-default" onclick="showphoto($(this))"><i class="fas fa-file-upload text-danger"></i></div>-->
+                                    <!--                                    --><?php //endif;?>
 
                                     <div class="btn btn-sm btn-danger" onclick="removeline($(this))">ลบ</div>
                                 </td>
@@ -236,13 +259,13 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
                                        onchange="linecal($(this))">
                             </td>
                             <td style="text-align: center;">
-<!--                                <input type="hidden" class="line-product-unit-id" value="" name="line_unit_id[]">-->
-<!--                                <input type="text" class="form-control line-product-unit-name" name="line_unit[]"-->
-<!--                                       value="" readonly>-->
+                                <!--                                <input type="hidden" class="line-product-unit-id" value="" name="line_unit_id[]">-->
+                                <!--                                <input type="text" class="form-control line-product-unit-name" name="line_unit[]"-->
+                                <!--                                       value="" readonly>-->
                                 <select name="line_unit_id[]" id="" class="form-control line-product-unit-id">
-                                    <?php foreach ($unit_data as $valuex):?>
-                                        <option value="<?=$valuex->id?>"><?=$valuex->name?></option>
-                                    <?php endforeach;?>
+                                    <?php foreach ($unit_data as $valuex): ?>
+                                        <option value="<?= $valuex->id ?>"><?= $valuex->name ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </td>
                             <td style="text-align: right">
@@ -254,7 +277,7 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
                                        name="line_total[]" value="" readonly>
                             </td>
                             <td style="text-align: center;">
-<!--                                <div class="btn btn-sm btn-default"><i class="fas fa-file-upload text-danger"></i></div>-->
+                                <!--                                <div class="btn btn-sm btn-default"><i class="fas fa-file-upload text-danger"></i></div>-->
                                 <div class="btn btn-sm btn-danger" onclick="removeline($(this))">ลบ</div>
                             </td>
                         </tr>
@@ -268,9 +291,10 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
                         <div class="btn btn-sm btn-primary" onclick="finditem();"><i class="fa fa-plus"></i></div>
                     </td>
                     <td colspan="6">
-                        
+
                     </td>
-                    <td><input type="text" class="form-control all-total" style="text-align: right" readonly value="0"></td>
+                    <td><input type="text" class="form-control all-total" style="text-align: right" readonly value="0">
+                    </td>
                     <td></td>
                 </tr>
                 </tfoot>
@@ -292,7 +316,7 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
                 <a class="btn btn-info"
                    href="index.php?r=quotation/print&id=<?= $model->id; ?>">พิมพ์ใบเสนอราคา</a>
                 <?php if (check_has_order($model->id) == 0): ?>
-<!--                    <a class="btn btn-warning" href="index.php?r=quotation/converttoso&id=--><?php //= $model->id; ?><!--">สร้างใบสั่งซื้อลูกค้า</a>-->
+                    <!--                    <a class="btn btn-warning" href="index.php?r=quotation/converttoso&id=--><?php //= $model->id; ?><!--">สร้างใบสั่งซื้อลูกค้า</a>-->
                 <?php endif; ?>
             <?php endif; ?>
         </div>
@@ -347,14 +371,15 @@ $unit_data = \backend\models\Unit::find()->select(['id','name'])->where(['status
 <?php
 function check_has_order($id)
 {
-   // return \backend\models\Order::find()->where(['quotation_id' => $id])->count();
+    // return \backend\models\Order::find()->where(['quotation_id' => $id])->count();
     return 0;
 }
 
-function check_is_drummy($product_id){
+function check_is_drummy($product_id)
+{
     $res = 0;
     $model = \backend\models\Product::find()->where(['id' => $product_id])->one();
-    if($model){
+    if ($model) {
         $res = $model->is_special;
     }
     return $res;

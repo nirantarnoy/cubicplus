@@ -62,7 +62,7 @@ class Quotation extends \common\models\Quotation
     public static function getLastNo()
     {
         //   $model = Orders::find()->MAX('order_no');
-        $model = Quotation::find()->MAX('quotation_no');
+        $model = Quotation::find()->where(['revise_no'=>0])->MAX('quotation_no');
 
         $pre = "QO";
 

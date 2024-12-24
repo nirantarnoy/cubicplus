@@ -5,17 +5,19 @@ namespace backend\helpers;
 class QuotationStatus
 {
     private static $data = [
-        '0' => 'Open',
-        '1' => 'Approved',
-        '2' => 'Closed',
-        '3' => 'Cancel'
+        '0' => 'Draft',
+        '1' => 'Send and Pending',
+        '2' => 'Revised',
+        '3' => 'Approved',
+        '4' => 'Rejected',
     ];
 
     private static $dataobj = [
-        ['id' => '0', 'name' => 'Open'],
-        ['id' => '1', 'name' => 'Approved'],
-        ['id' => '2', 'name' => 'Closed'],
-        ['id' => '3', 'name' => 'Cancel'],
+        ['id' => '0', 'name' => 'Draft'],
+        ['id' => '1', 'name' => 'Send and Pending'],
+        ['id' => '2', 'name' => 'Revised'],
+        ['id' => '3', 'name' => 'Approved'],
+        ['id' => '4', 'name' => 'Rejected'],
     ];
 
     public static function asArray()

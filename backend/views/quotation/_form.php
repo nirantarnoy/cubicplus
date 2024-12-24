@@ -55,7 +55,7 @@ $unit_data = \backend\models\Unit::find()->select(['id', 'name'])->where(['statu
         </div>
         <div class="col-lg-3">
             <label for="">สถานะ</label>
-            <input type="text" class="form-control" readonly value="Opened">
+            <input type="text" class="form-control" readonly value="<?=\backend\helpers\QuotationStatus::getTypeById($model->status)?>">
             <?= $form->field($model, 'status')->hiddenInput()->label(false) ?>
         </div>
         <div class="col-lg-3">

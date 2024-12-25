@@ -384,6 +384,7 @@ class QuotationController extends Controller
             $model_new->commission_amt = $model->commission_amt;
             $model_new->commission_emp_id = $model->commission_emp_id;
             $model_new->origin_id = $model->id;
+            $model_new->special_text = $model->special_text;
 
             if ($model_new->save(false)) {
                 $total_all = 0;

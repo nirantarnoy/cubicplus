@@ -219,6 +219,15 @@
                         <td style="text-align: right;border:1px solid lightgrey;padding-right: 5px;"><?= number_format($value->qty * $value->line_price, 2) ?></td>
                     </tr>
                 <?php endforeach; ?>
+                <tr>
+                    <td style="text-align: center;border:1px solid lightgrey;"></td>
+                    <td style="border:1px solid lightgrey;"></td>
+                    <td style="text-align: center;border:1px solid lightgrey;width: 10%;padding: 5px;"><span style="color: red;"><b><?=$model->special_text;?></b></span></td>
+                    <td style="border:1px solid lightgrey;"></td>
+                    <td style="text-align: center;border:1px solid lightgrey;"></td>
+                    <td style="text-align: center;border:1px solid lightgrey;"></td>
+                    <td style="text-align: center;border:1px solid lightgrey;"></td>
+                </tr>
                 <?php if ($model_line != null): ?>
                     <?php if (count($model_line) < 10): ?>
                         <?php for ($i = 1; $i <= 10 - count($model_line); $i++): ?>
@@ -234,7 +243,9 @@
                                 <td style="text-align: center;border:1px solid lightgrey;"></td>
                             </tr>
                         <?php endfor; ?>
+
                     <?php endif; ?>
+
                 <?php endif; ?>
                 </tbody>
                 <tfoot>

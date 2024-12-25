@@ -91,6 +91,9 @@ $unit_data = \backend\models\Unit::find()->select(['id', 'name'])->where(['statu
 
             ]) ?>
         </div>
+        <div class="col-lg-3">
+            <?= $form->field($model, 'special_text')->textarea(['maxlength' => true]) ?>
+        </div>
     </div>
     <br/>
     <div class="row">

@@ -41,7 +41,7 @@ class Quotation extends \yii\db\ActiveRecord
             [['customer_id'],'required'],
             [['quotation_date'], 'safe'],
             [['customer_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by','attn_id','revise_no','due_date_amt','payment_term_id','commission_emp_id','origin_id'], 'integer'],
-            [['quotation_no', 'customer_name', 'attn', 'from', 'remark', 'description','total_text'], 'string', 'max' => 255],
+            [['quotation_no', 'customer_name', 'attn', 'from', 'remark', 'description','total_text','special_text'], 'string', 'max' => 255],
             [['discount_per','discount_amt','commission_amt'],'number'],
         ];
     }
@@ -72,6 +72,7 @@ class Quotation extends \yii\db\ActiveRecord
             'updated_by' => 'แก้ไขโดย',
             'remark' => 'หมายเหตุ',
             'description' => 'รายละเอียด',
+            'special_text' => 'Special Text',
         ];
     }
 }

@@ -180,5 +180,32 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <br>
+    <div class="row">
+        <div class="col-lg-12">
+            <h5>ผู้ติดต่อ</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ชื่อผู้ติดต่อ</th>
+                    <th>ฝ่าย/หน่วยงาน</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if($model_contact!=null):?>
+                <?php foreach ($model_contact as $value):?>
+                <tr>
+                    <td><?=$value->contact_name?></td>
+                    <td><?=$value->dept_name?></td>
+                </tr>
+                <?php endforeach;?>
+                <?php endif;?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 </div>

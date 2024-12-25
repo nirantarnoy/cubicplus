@@ -83,8 +83,10 @@ class CustomerController extends Controller
      */
     public function actionView($id)
     {
+        $model_contact = \common\models\ContactInfo::find()->where(['party_ref_id'=>$id,'party_type_id'=>2])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'model_contact' => $model_contact,
         ]);
     }
 

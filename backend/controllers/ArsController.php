@@ -100,10 +100,12 @@ class ArsController extends Controller
     {
         $model_product = \common\models\ArsLine::find()->where(['ars_id'=>$id])->one();
         $model_log = \common\models\ArsLog::find()->where(['ars_id'=>$id])->orderBy(['trans_date'=>SORT_DESC])->all();
+        $model_product_line = \common\models\ArsProductLine::find()->where(['ars_id'=>$id])->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
             'model_product' => $model_product,
             'model_log' => $model_log,
+            'model_product_line'=>$model_product_line,
         ]);
     }
 
@@ -119,6 +121,12 @@ class ArsController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model_product->load($this->request->post())) {
+
+                $line_product_id = \Yii::$app->request->post('line_product_id');
+                $line_product_sku = \Yii::$app->request->post('line_sku');
+                $line_product_serial_no = \Yii::$app->request->post('line_serial_no');
+                $line_product_qty = \Yii::$app->request->post('line_qty');
+
                 $issue_date = date('Y-m-d');
                 $exp3 = explode('-',$model->issue_date);
                 if($exp3!=null){
@@ -152,6 +160,20 @@ class ArsController extends Controller
                     $model_product->period_start_date = date('Y-m-d',strtotime($w_start_date));
                     $model_product->period_end_date = date('Y-m-d',strtotime($w_exp_date));
                     if($model_product->save(false)){
+
+                        if($line_product_id!=null){
+                            for($k=0;$k<=count($line_product_id)-1;$k++){
+                                $model_product_line = new \common\models\ArsProductLine();
+                                $model_product_line->ars_id = $model->id;
+                                $model_product_line->product_id = $line_product_id[$k];
+                                $model_product_line->sku = $line_product_sku[$k];
+                                $model_product_line->serial_no = $line_product_serial_no[$k];
+                                $model_product_line->qty = $line_product_qty[$k];
+                                $model_product_line->save(false);
+                            }
+                        }
+
+
                         $model_log = new \common\models\ArsLog();
                         $model_log->ars_id = $model->id;
                         $model_log->detail = 'สร้างรายการ';
@@ -184,8 +206,16 @@ class ArsController extends Controller
         $model = $this->findModel($id);
         $model_product = new \common\models\ArsLine();
         $model_line = \common\models\ArsLine::find()->where(['ars_id' => $id])->all();
+        $model_product_line = \common\models\ArsProductLine::find()->where(['ars_id' => $id])->all();
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model_product->load($this->request->post())) {
+
+            $line_product_id = \Yii::$app->request->post('line_product_id');
+            $line_product_sku = \Yii::$app->request->post('line_sku');
+            $line_product_serial_no = \Yii::$app->request->post('line_serial_no');
+            $line_product_qty = \Yii::$app->request->post('line_qty');
+            $line_rec_id = \Yii::$app->request->post('line_rec_id');
+
             $exp = explode('-',$model_product->period_start_date);
             $exp2 = explode('-',$model_product->period_end_date);
             $exp3 = explode('-',$model->issue_date);
@@ -217,6 +247,21 @@ class ArsController extends Controller
                 $model_product->qty = 1;
                 $model_product->save(false);
 
+
+
+                if($line_product_id!=null){
+                    \common\models\ArsProductLine::deleteAll(['ars_id' => $id]);
+                    for($k=0;$k<=count($line_product_id)-1;$k++){
+                        $model_product_line = new \common\models\ArsProductLine();
+                        $model_product_line->ars_id = $model->id;
+                        $model_product_line->product_id = $line_product_id[$k];
+                        $model_product_line->sku = $line_product_sku[$k];
+                        $model_product_line->serial_no = $line_product_serial_no[$k];
+                        $model_product_line->qty = $line_product_qty[$k];
+                        $model_product_line->save(false);
+                    }
+                }
+
                 $model_log = new \common\models\ArsLog();
                 $model_log->ars_id = $model->id;
                 $model_log->detail = $model->log_text;
@@ -231,6 +276,7 @@ class ArsController extends Controller
             'model' => $model,
             'model_product' => $model_product,
             'model_line' => $model_line,
+            'model_product_line'=>$model_product_line,
         ]);
     }
 

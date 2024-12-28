@@ -14,6 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'model_product' => $model_product,
         'model_line' => null,
+        'model_product_line'=>null,
     ]) ?>
 
 </div>

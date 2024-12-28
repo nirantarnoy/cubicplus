@@ -134,7 +134,35 @@ $customer_data = getcusfulladdress($model->customer_id);
                 <tr>
                     <td style="width: 20%;background-color: lightgrey;"><b>Product Detail</b></td>
                     <td colspan="3" style="border-right: 1px solid lightgrey;">
-                        <?= $model->other_product; ?>
+                        <?php //echo $model->other_product; ?>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th style="text-align: center;width: 5%">#</th>
+                                        <th>Sku</th>
+                                        <th>Serial no.</th>
+                                        <th>Qty</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php if($model_product_line!=null):?>
+                                    <?php $line_num = 0;?>
+                                    <?php foreach($model_product_line as $valuex):?>
+                                            <?php $line_num +=1;?>
+                                    <tr>
+                                        <td style="text-align: center"><?=$line_num?></td>
+                                        <td><?=$valuex->sku?></td>
+                                        <td><?=$valuex->serial_no?></td>
+                                        <td><?=$valuex->qty?></td>
+                                    </tr>
+                                    <?php endforeach;?>
+                                    <?php endif;?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr>

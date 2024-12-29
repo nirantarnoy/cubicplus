@@ -281,7 +281,6 @@ $customer_data = getcusfulladdress($model->customer_id);
             </table>
         </div>
     </div>
-
 </div>
 <br/>
 <table width="100%" class="table-title">

@@ -318,6 +318,16 @@ class ArsController extends Controller
             'model_product' => $model_product,
         ]);
     }
+    public function actionPrintadvance($id){
+
+        $model_product = \common\models\ArsLine::find()->where(['ars_id'=>$id])->one();
+        $model_product_line =\common\models\ArsProductLine::find()->where(['ars_id'=>$id])->all();
+        return $this->render('_print', [
+            'model' => $this->findModel($id),
+            'model_product' => $model_product,
+            'model_product_line'=> $model_product_line,
+        ]);
+    }
 
     public function actionApprove($id){
       //  $id = \Yii::$app->request->post('id');

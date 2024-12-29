@@ -102,7 +102,8 @@ $customer_data = getcusfulladdress($model->customer_id);
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="4" style="padding: 5px;border-left: 1px solid lightgrey;border-left: 1px solid lightgrey;border-right: 1px solid lightgrey">
+                    <td colspan="4"
+                        style="padding: 5px;border-left: 1px solid lightgrey;border-left: 1px solid lightgrey;border-right: 1px solid lightgrey">
                         <table class="table">
                             <tr>
                                 <td style="width: 33%;background-color: lightgrey;border-left: 1px solid lightgrey">
@@ -131,7 +132,9 @@ $customer_data = getcusfulladdress($model->customer_id);
 
                 </tr>
                 <tr>
-                    <td colspan="4" style="background-color: lightgrey;text-align: center;padding-top: 10px;border-left: 1px solid lightgrey;border-right: 1px solid lightgrey"><h6><b>SYSNOLOGY
+                    <td colspan="4"
+                        style="background-color: lightgrey;text-align: center;padding-top: 10px;border-left: 1px solid lightgrey;border-right: 1px solid lightgrey">
+                        <h6><b>SYSNOLOGY
                                 PRODUCT AND SERVICE DESCRIPTION</b></h6></td>
                 </tr>
                 <tr>
@@ -174,7 +177,8 @@ $customer_data = getcusfulladdress($model->customer_id);
                     </td>
                 </tr>
                 <tr>
-                    <td rowspan="2" style="width: 20%;background-color: lightgrey;vertical-align: middle;border-left: 1px solid lightgrey;border-right: 1px solid lightgrey">
+                    <td rowspan="2"
+                        style="width: 20%;background-color: lightgrey;vertical-align: middle;border-left: 1px solid lightgrey;border-right: 1px solid lightgrey">
                         Package Type
                     </td>
                     <td colspan="3" style="border-right: 1px solid lightgrey;">
@@ -182,7 +186,8 @@ $customer_data = getcusfulladdress($model->customer_id);
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="border-right: 1px solid lightgrey;border-left: 1px solid lightgrey;border-right: 1px solid lightgrey">
+                    <td colspan="3"
+                        style="border-right: 1px solid lightgrey;border-left: 1px solid lightgrey;border-right: 1px solid lightgrey">
                         <?= \backend\models\Installarea::findName($model_product->install_area_id) ?>
                     </td>
                 </tr>
@@ -236,6 +241,43 @@ $customer_data = getcusfulladdress($model->customer_id);
                     </td>
                 </tr>
 
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>PREMIUM ADVANCED REPLACEMENT SERVICE</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <h3><?= $model->ars_no ?></h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <td>Hardware Part No.</td>
+                    <td>Serial No.</td>
+                    <td>Start Date</td>
+                    <td>End Date</td>
+                </tr>
+                </thead>
+                <tbody>
+                <?php if ($model_product_line != null): ?>
+                    <?php foreach ($model_product_line as $value): ?>
+                        <tr>
+                            <td><?=$value->sku?></td>
+                            <td><?=$value->serial_no?></td>
+                            <td><?= $model_product->period_start_date != null ? date('d/m/Y', strtotime($model_product->period_start_date)) : ''; ?></td>
+                            <td><?= $model_product->period_end_date != null ? date('d/m/Y', strtotime($model_product->period_end_date)) : ''; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+                </tbody>
             </table>
         </div>
     </div>
